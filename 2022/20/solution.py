@@ -9,6 +9,9 @@ class Datum(NamedTuple):
 
 
 class CypherSpace:
+    
+    input_file: Union[str, Path]
+    
     def __init__(self, input_file: Union[str, Path]):
         input_file: Path = Path(input_file)
         self.raw_data: list[str] = input_file.open('r').readlines()
