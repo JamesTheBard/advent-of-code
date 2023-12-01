@@ -32,7 +32,7 @@ class CypherSpace:
                 queue.appendleft(datum)
         return queue
 
-    def get_coordinates(self, queue) -> tuple[Datum]:
+    def get_coordinates(self, queue: deque[Datum]) -> tuple[Datum]:
         length: int = len(queue)
         zero_index: Datum = next(i for i in queue if i.value == 0)
         queue.rotate(-1 * queue.index(zero_index))
@@ -46,5 +46,5 @@ class CypherSpace:
 
 if __name__ == "__main__":
     c = CypherSpace("input.txt")
-    print(c.solve())
-    print(c.solve(10, 811589153))
+    print(c.solve(mix_times=1))
+    print(c.solve(mix_times=10, key=811589153))
