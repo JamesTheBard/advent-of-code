@@ -1,6 +1,6 @@
-from pathlib import Path
-from typing import Union, Optional, NamedTuple, Iterator
 from collections import deque
+from pathlib import Path
+from typing import NamedTuple, Union
 
 
 class Datum(NamedTuple):
@@ -9,9 +9,9 @@ class Datum(NamedTuple):
 
 
 class CypherSpace:
-    
+
     input_file: Union[str, Path]
-    
+
     def __init__(self, input_file: Union[str, Path]):
         input_file: Path = Path(input_file)
         self.raw_data: list[str] = input_file.open('r').readlines()
@@ -22,7 +22,7 @@ class CypherSpace:
     def mix(self, data: tuple[Datum], times: int = 1) -> deque[Datum]:
         length: int = len(data)
         queue: deque = deque(data)
-        
+
         for _ in range(times):
             for datum in data:
                 queue.rotate(-1 * queue.index(datum))
