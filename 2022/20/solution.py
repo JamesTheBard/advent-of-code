@@ -29,11 +29,11 @@ class CypherSpace:
                 queue.appendleft(datum)
         return queue
 
-    def get_coordinates(self, queue) -> Iterator[Datum]:
+    def get_coordinates(self, queue) -> tuple[Datum]:
         length: int = len(queue)
         zero_index: Datum = next(i for i in queue if i.value == 0)
         queue.rotate(-1 * queue.index(zero_index))
-        return (queue[(i * 1000) % length].value for i in range(1, 4))
+        return tuple(queue[(i * 1000) % length].value for i in range(1, 4))
 
     def solve(self, mix_times: int = 1, key: int = 1) -> int:
         data: list[Datum] = self.generate_data(key)
