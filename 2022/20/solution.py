@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Union, Optional, NamedTuple
+from typing import Union, Optional, NamedTuple, Iterator
 from collections import deque
 
 
@@ -10,16 +10,15 @@ class Datum(NamedTuple):
 
 class CypherSpace:
     def __init__(self, input_file: Union[str, Path]):
-        input_file = Path(input_file)
-        self.raw_data = input_file.open('r').readlines()
-        self.original_data = self.generate_data()
+        input_file: Path = Path(input_file)
+        self.raw_data: list[str] = input_file.open('r').readlines()
 
-    def generate_data(self, key: int = 1) -> list[Datum]:
-        return [Datum(idx, int(i) * key) for idx, i in enumerate(self.raw_data)]
+    def generate_data(self, key: int = 1) -> tuple[Datum]:
+        return tuple(Datum(idx, int(i) * key) for idx, i in enumerate(self.raw_data))
 
-    def mix(self, data, times: int = 1):
-        length = len(data)
-        queue = deque(data)
+    def mix(self, data: tuple[Datum], times: int = 1) -> deque[Datum]:
+        length: int = len(data)
+        queue: deque = deque(data)
         
         for _ in range(times):
             for datum in data:
@@ -28,22 +27,17 @@ class CypherSpace:
                 r = datum.value % (length - 1)
                 queue.rotate(-1 * r)
                 queue.appendleft(datum)
+        return queue
 
-        return list(queue)
-        
+    def get_coordinates(self, queue) -> Iterator[Datum]:
+        length: int = len(queue)
+        zero_index: Datum = next(i for i in queue if i.value == 0)
+        queue.rotate(-1 * queue.index(zero_index))
+        return (queue[(i * 1000) % length].value for i in range(1, 4))
 
-    def get_coordinates(self, data):
-        zero_index = [idx for idx, i in enumerate(data) if i[1] == 0][0]
-        return (
-            data[(zero_index + 1000) % len(data)][1],
-            data[(zero_index + 2000) % len(data)][1],
-            data[(zero_index + 3000) % len(data)][1],
-        )
-        return data
-
-    def solve(self, mix_times: int = 1, key: int = 1):
-        data = self.generate_data(key)
-        data = self.mix(data, mix_times)
+    def solve(self, mix_times: int = 1, key: int = 1) -> int:
+        data: list[Datum] = self.generate_data(key)
+        data: deque[Datum] = self.mix(data, mix_times)
         return sum(self.get_coordinates(data))
 
 
