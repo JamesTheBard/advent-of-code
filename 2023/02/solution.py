@@ -11,13 +11,13 @@ class Draw(NamedTuple):
     blue: int = 0
 
     @property
-    def power(self):
+    def power(self) -> int:
         return self.red * self.green * self.blue
 
-    def __le__(self, other):
+    def __le__(self, other: "Draw") -> bool:
         return all(le(i, j) for i, j in zip(self, other))
 
-    def __add__(self, other):
+    def __add__(self, other: "Draw") -> "Draw":
         return Draw(*(max(i, j) for i, j in zip(self, other)))
 
 
