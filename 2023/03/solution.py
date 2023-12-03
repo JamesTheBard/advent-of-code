@@ -40,7 +40,8 @@ class Solution:
         for idx, line in enumerate(self.data):
             if matches := re.finditer(r'(\d+)', line):
                 for m in matches:
-                    s: tuple[Symbol] = self.get_symbols(m.start(), m.end(), idx)
+                    s: tuple[Symbol] = self.get_symbols(
+                        m.start(), m.end(), idx)
                     self.numbers.append(Number(int(m.group(1)), s))
 
     def get_symbols(self, x_start: int, x_end: int, y: int) -> tuple[Symbol]:
@@ -62,7 +63,8 @@ class Solution:
 
     def solve_part2(self) -> int:
         total = 0
-        gears: set[Symbol] = reduce(add, set(i.gears for i in self.numbers if i.gears))
+        gears: set[Symbol] = set(
+            reduce(add, (i.gears for i in self.numbers if i.gears)))
         for gear in gears:
             numbers: tuple[Number] = tuple(
                 i for i in self.numbers if i.has_gear(gear))
