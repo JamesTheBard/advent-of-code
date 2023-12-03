@@ -66,7 +66,7 @@ class Solution:
         number_gears: tuple[Number] = tuple(i for i in self.numbers if i.gears)
         gears: set[Symbol] = set(reduce(add, (i.gears for i in number_gears)))
         for gear in gears:
-            numbers = tuple(i for i in number_gears if i.has_gear(gear))
+            numbers: tuple[Number] = tuple(i for i in number_gears if i.has_gear(gear))
             if len(numbers) == 2:
                 total += prod(i.value for i in numbers)
         return total
