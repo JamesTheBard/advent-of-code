@@ -1,6 +1,8 @@
 import re
 from math import prod
 from pathlib import Path
+from operator import add
+from functools import reduce
 from typing import NamedTuple, Union
 
 
@@ -60,7 +62,7 @@ class Solution:
 
     def solve_part2(self) -> int:
         total = 0
-        gears: set[Symbol] = set(i.gears[0] for i in self.numbers if i.gears)
+        gears: set[Symbol] = reduce(add, set(i.gears for i in self.numbers if i.gears))
         for gear in gears:
             numbers: tuple[Number] = tuple(
                 i for i in self.numbers if i.has_gear(gear))
