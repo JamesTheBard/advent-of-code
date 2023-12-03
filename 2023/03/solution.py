@@ -1,8 +1,8 @@
 import re
-from math import prod
-from pathlib import Path
-from operator import add
 from functools import reduce
+from math import prod
+from operator import add
+from pathlib import Path
 from typing import NamedTuple, Union
 
 
