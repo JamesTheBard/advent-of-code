@@ -13,7 +13,7 @@ class Symbol(NamedTuple):
 
 
 class Number(NamedTuple):
-    number: int
+    value: int
     symbols: tuple[Symbol]
 
     @property
@@ -59,7 +59,7 @@ class Solution:
         return tuple(symbols)
 
     def solve_part1(self) -> int:
-        return sum(i.number for i in self.numbers if i.symbols)
+        return sum(i.value for i in self.numbers if i.symbols)
 
     def solve_part2(self) -> int:
         total = 0
@@ -69,7 +69,7 @@ class Solution:
             numbers: tuple[Number] = tuple(
                 i for i in self.numbers if i.has_gear(gear))
             if len(numbers) == 2:
-                total += prod(i.number for i in numbers)
+                total += prod(i.value for i in numbers)
         return total
 
 
