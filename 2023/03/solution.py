@@ -1,5 +1,6 @@
 import re
 from functools import reduce
+from itertools import product
 from math import prod
 from operator import add
 from pathlib import Path
@@ -45,17 +46,14 @@ class Solution:
                     self.numbers.append(Number(int(m.group(1)), s))
 
     def get_symbols(self, x_start: int, x_end: int, y: int) -> tuple[Symbol]:
+        x_len, y_len = range(len(self.data[0])), range(len(self.data))
+        x_range: set[int] = set(x_len) & set((range(x_start - 1, x_end + 1)))
+        y_range: set[int] = set(y_len) & set((range(y - 1, y + 2)))
+        
         symbols: list[Symbol] = list()
-
-        x_start = x_start - 1 + (x_start == 0)
-        x_end = x_end + 1 - (x_end == len(self.data[0]))
-        y_start = y - 1 + (y == 0)
-        y_end = y + 1 - (y >= len(self.data) - 1)
-
-        for x in range(x_start, x_end):
-            for y in range(y_start, y_end + 1):
-                if self.data[y][x] not in ".0123456789":
-                    symbols.append(Symbol(x, y, self.data[y][x]))
+        for i, j in product(x_range, y_range, repeat=1):
+            if (s := self.data[j][i]) not in ".0123456789":
+                symbols.append(Symbol(i, j, s))
         return tuple(symbols)
 
     def solve_part1(self) -> int:
