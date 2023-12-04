@@ -17,14 +17,14 @@ class Ticket(NamedTuple):
 
 class Solution:
     def __init__(self, input_file: Union[str, Path]):
-        input_file = Path(input_file)
+        input_file: Path = Path(input_file)
         self.tickets: dict[Ticket, int] = self.process_tickets(input_file)
 
     def process_tickets(self, input_file: Path) -> dict[Ticket, int]:
         tickets: dict[Ticket, int] = dict()
         content = input_file.open('r').readlines()
         for line in content:
-            line = line.split(': ')[-1].split('|')
+            line: list[str] = line.split(': ')[-1].split('|')
             winning_numbers = tuple(int(i) for i in line[0].split(' ') if i)
             ticket_numbers = tuple(int(i) for i in line[1].split(' ') if i)
             tickets[Ticket(winning_numbers, ticket_numbers)] = 1
