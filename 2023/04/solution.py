@@ -7,22 +7,21 @@ class Ticket(NamedTuple):
     ticket_numbers: tuple[int]
 
     @property
-    def matches(self):
+    def matches(self) -> int:
         return len(set(self.winning_numbers) & set(self.ticket_numbers))
 
     @property
-    def points(self):
+    def points(self) -> int:
         return 2 ** (self.matches - 1) if self.matches else 0
 
 
 class Solution:
     def __init__(self, input_file: Union[str, Path]):
         input_file = Path(input_file)
-        self.tickets: dict[tuple[Ticket],
-                           int] = self.process_tickets(input_file)
+        self.tickets: dict[Ticket, int] = self.process_tickets(input_file)
 
-    def process_tickets(self, input_file: Path) -> tuple[Ticket]:
-        tickets = dict()
+    def process_tickets(self, input_file: Path) -> dict[Ticket, int]:
+        tickets: dict[Ticket, int] = dict()
         content = input_file.open('r').readlines()
         for line in content:
             line = line.split(': ')[-1].split('|')
@@ -32,10 +31,10 @@ class Solution:
             tickets[Ticket(winning_numbers, ticket_numbers)] = 1
         return tickets
 
-    def solve_part1(self):
+    def solve_part1(self) -> int:
         return sum(i.points for i in self.tickets.keys())
 
-    def solve_part2(self):
+    def solve_part2(self) -> int:
         tickets: tuple[Ticket] = tuple(self.tickets.keys())
         for idx, ticket in enumerate(tickets):
             if not ticket.matches:
