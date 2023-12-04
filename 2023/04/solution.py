@@ -26,8 +26,7 @@ class Solution:
         for line in content:
             line = line.split(': ')[-1].split('|')
             winning_numbers = tuple(int(i) for i in line[0].split(' ') if i)
-            ticket_numbers = tuple(
-                int(i) for i in line[1].strip().split(' ') if i)
+            ticket_numbers = tuple(int(i) for i in line[1].split(' ') if i)
             tickets[Ticket(winning_numbers, ticket_numbers)] = 1
         return tickets
 
@@ -37,8 +36,6 @@ class Solution:
     def solve_part2(self) -> int:
         tickets: tuple[Ticket] = tuple(self.tickets.keys())
         for idx, ticket in enumerate(tickets):
-            if not ticket.matches:
-                continue
             for i in range(ticket.matches):
                 self.tickets[tickets[i + idx + 1]] += self.tickets[ticket]
         return sum(i for i in self.tickets.values())
