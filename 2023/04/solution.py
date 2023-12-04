@@ -12,7 +12,7 @@ class Ticket(NamedTuple):
 
     @property
     def points(self) -> int:
-        return 2 ** (self.matches - 1) if self.matches else 0
+        return 1 << (self.matches - 1) if self.matches else 0
 
 
 class Solution:
