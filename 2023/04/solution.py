@@ -25,8 +25,8 @@ class Solution:
         content = input_file.open('r').readlines()
         for line in content:
             line = line.split(': ')[-1].split('|')
-            winning_numbers = tuple(int(i) for i in line[0].split(' ') if i)
-            ticket_numbers = tuple(int(i) for i in line[1].split(' ') if i)
+            winning_numbers = tuple(int(i) for i in line[0].split())
+            ticket_numbers = tuple(int(i) for i in line[1].split())
             tickets[Ticket(winning_numbers, ticket_numbers)] = 1
         return tickets
 
