@@ -28,10 +28,9 @@ class Solution:
         time: int = int(''.join(str(i[0]) for i in self.states))
         distance: int = int(''.join(str(i[1]) for i in self.states))
         return self.calculate(time, distance)
-            
+
 
 if __name__ == "__main__":
     s = Solution("input.txt")
     print(s.solve_part1())
     print(s.solve_part2())
-        
