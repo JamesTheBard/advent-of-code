@@ -1,14 +1,13 @@
+import re
+from math import prod, sqrt, trunc
 from pathlib import Path
 from typing import Union
-from math import prod, sqrt, floor, ceil, trunc
-import re
 
-RaceState = tuple[int]
 
 class Solution:
     def __init__(self, input_file: Union[str, Path]):
         input_file: Path = Path(input_file)
-        self.states: tuple[RaceState] = tuple()
+        self.states: tuple[tuple[int]] = tuple()
         self.process_input(input_file)
         
     def process_input(self, input_file: Path) -> None:
