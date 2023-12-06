@@ -4,14 +4,14 @@ from itertools import batched, chain
 from pathlib import Path
 from typing import NamedTuple, Union
 
-Seed = list[range]
+Seeds = list[range]
 RangeMap = list[range, int]
 
 
 class Solution:
 
     def __init__(self, input_file: Union[str, Path]):
-        self.seeds: list[Seed] = list()
+        self.seeds: list[range] = list()
         self.ranges: list[RangeMap] = list()
         self.raw_seeds: list[int]
         self.process_input(Path(input_file))
@@ -20,7 +20,8 @@ class Solution:
         content = input_file.open('r').readlines()
         regex = r'(\d+)'
         self.raw_seeds = [int(i) for i in re.findall(regex, content.pop(0))]
-        self.seeds = [range(i, i + j - 1) for i, j in batched(self.raw_seeds, 2)]
+        self.seeds = [range(i, i + j - 1)
+                      for i, j in batched(self.raw_seeds, 2)]
         ranges = list()
         for line in content:
             if r := [int(i) for i in re.findall(regex, line)]:
@@ -34,48 +35,50 @@ class Solution:
 
         def overlap(i: range, j: range) -> bool:
             return i.start < j.stop and i.stop > j.start
-        
+
         def shift(i: range, offset: int) -> range:
             return range(i.start + offset, i.stop + offset)
-        
+
         for r, offset in ranges:
-            if not overlap:
+            if not overlap(seed, r):
                 continue
 
             if r.start <= seed.start and r.stop >= seed.stop:
                 return [shift(seed, offset)]
-            
+
             if r.start >= seed.start and r.stop <= seed.stop:
                 return [
                     range(seed.start, r.start),
                     shift(r, offset),
                     *self.transform(range(r.stop, seed.stop), ranges)
                 ]
-            
+
             if r.start <= seed.start and r.stop <= seed.stop:
-                print(ranges)
                 return [
                     shift(range(seed.start, r.stop), offset),
                     *self.transform(range(r.stop, seed.stop), ranges)
                 ]
-            
+
             if r.start >= seed.start and r.stop >= seed.stop:
                 return [
                     range(seed.start, r.start),
                     shift(range(r.start, seed.stop), offset),
                 ]
-            
+
         return [seed]
-    
+
     def solve_part2(self) -> int:
         results = list()
         for seed in self.seeds:
             ranges = [seed]
             for r in self.ranges:
-                ranges = list(chain.from_iterable(self.transform(i, r) for i in ranges))
+                ranges = list(chain.from_iterable(
+                    self.transform(i, r) for i in ranges))
             results.append(sorted(ranges, key=lambda x: x.start)[0].start)
+        print(results)
         return min(results)
 
+
 if __name__ == "__main__":
-    s = Solution("example.txt")
+    s = Solution("input.txt")
     print(s.solve_part2())
