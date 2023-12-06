@@ -67,15 +67,18 @@ class Solution:
 
         return [seed]
 
+    def solve_part1(self) -> int:
+        pass
+
     def solve_part2(self) -> int:
         results = list()
         for seed in self.seeds:
             ranges = [seed]
             for r in self.ranges:
+                r = sorted(r, key=lambda x: x[0].start)
                 ranges = list(chain.from_iterable(
                     self.transform(i, r) for i in ranges))
             results.append(sorted(ranges, key=lambda x: x.start)[0].start)
-        print(results)
         return min(results)
 
 
