@@ -18,8 +18,8 @@ class Solution:
         
     def calculate(self, time: int, distance: int) -> int:
         t_half: float = time / 2
-        t_min: int = trunc(-sqrt(-distance + (t_half ** 2)) + t_half) + 1
-        return time - (2 * t_min - 1)
+        t_min: int = trunc(t_half - sqrt((t_half ** 2) - distance)) + 1
+        return time - (2 * t_min) + 1
     
     def solve_part1(self) -> int:
         return prod(self.calculate(*i) for i in self.states)
