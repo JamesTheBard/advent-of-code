@@ -16,7 +16,7 @@ class Hand(NamedTuple):
 
     @property
     def hand_type(self) -> int:
-        c = Counter(sorted(self.cards))
+        c = Counter(self.cards)
         if len(c) == 5:  # High card
             return 0
         if len(c) == 4:  # A pair
