@@ -2,6 +2,7 @@ from collections import Counter
 from operator import eq, ge, gt, le, lt
 from pathlib import Path
 from typing import NamedTuple, Union
+from enum import Enum
 
 cards = "23456789TJQKA"
 joker = "J23456789TQKA"
@@ -10,24 +11,39 @@ cards_matrix = {j: idx for idx, j in enumerate(cards)}
 joker_matrix = {j: idx for idx, j in enumerate(joker)}
 
 
+class HandType(Enum):
+    HIGH_CARD = 0
+    ONE_PAIR = 1
+    TWO_PAIR = 2
+    THREE_OF_A_KIND = 3
+    FULL_HOUSE = 4
+    FOUR_OF_A_KIND = 5
+    FIVE_OF_A_KIND = 6
+
+
 class Hand(NamedTuple):
     cards: tuple[int]
     bid: int
 
     @property
-    def hand_type(self) -> int:
+    def hand_type(self) -> HandType:
         c = Counter(self.cards)
-        match len(c):
+        unique_cards, quantities = len(c), c.values()
+        match unique_cards:
             case 5:
-                return 0
+                return HandType.HIGH_CARD
             case 4:
-                return 1
+                return HandType.ONE_PAIR
             case 3:
-                return 3 if 3 in c.values() else 2
+                if 3 in quantities:
+                    return HandType.THREE_OF_A_KIND
+                return HandType.TWO_PAIR
             case 2:
-                return 4 if 3 in c.values() else 5
+                if 3 in quantities:
+                    return HandType.FULL_HOUSE
+                return HandType.FOUR_OF_A_KIND
             case 1:
-                return 6
+                return HandType.FIVE_OF_A_KIND
 
     @property
     def max_value(self) -> int:
@@ -37,7 +53,7 @@ class Hand(NamedTuple):
     def hand_value(self) -> int:
         value: int = sum(
             i * (self.max_value ** j) for j, i in enumerate(self.cards[::-1]))
-        return value + (self.hand_type * (self.max_value ** 5))
+        return value + (self.hand_type.value * (self.max_value ** 5))
 
     def _compare(self, f, other: "Hand") -> bool:
         return f(self.hand_value, other.hand_value)
@@ -61,22 +77,24 @@ class Hand(NamedTuple):
 class JokerHand(Hand):
 
     @property
-    def hand_type(self) -> int:
+    def hand_type(self) -> HandType:
         hand_type: int = super().hand_type
         jokers: int = Counter(self.cards)[joker_matrix["J"]]
         if not jokers:
             return hand_type
-        match hand_type:
-            case 0:
-                return 1
-            case 1:
-                return 3
-            case 2:
-                return 4 if jokers == 1 else 5
-            case 3:
-                return 5
+        match HandType(hand_type):
+            case HandType.HIGH_CARD:
+                return HandType.ONE_PAIR
+            case HandType.ONE_PAIR:
+                return HandType.THREE_OF_A_KIND
+            case HandType.TWO_PAIR:
+                if jokers == 1:
+                    return HandType.FULL_HOUSE
+                return HandType.FOUR_OF_A_KIND
+            case HandType.THREE_OF_A_KIND:
+                return HandType.FOUR_OF_A_KIND
             case _:
-                return 6
+                return HandType.FIVE_OF_A_KIND
 
 
 class Solution:
