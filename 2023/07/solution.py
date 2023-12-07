@@ -52,7 +52,8 @@ class Hand(NamedTuple):
     @property
     def hand_value(self) -> int:
         value: int = sum(
-            i * (self.max_value ** j) for j, i in enumerate(self.cards[::-1]))
+            i * (self.max_value ** j) 
+            for j, i in enumerate(self.cards[::-1]))
         return value + (self.hand_type.value * (self.max_value ** 5))
 
     def _compare(self, f, other: "Hand") -> bool:
