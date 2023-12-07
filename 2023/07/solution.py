@@ -17,20 +17,17 @@ class Hand(NamedTuple):
     @property
     def hand_type(self) -> int:
         c = Counter(self.cards)
-        if len(c) == 5:  # High card
-            return 0
-        if len(c) == 4:  # A pair
-            return 1
-        if len(c) == 3:  # Two pair/3 of a kind
-            if 3 in c.values():
-                return 3
-            return 2
-        if len(c) == 2:  # Full house/4 of a kind
-            if 3 in c.values():
-                return 4
-            return 5
-        if len(c) == 1:  # Five of a kind
-            return 6
+        match len(c):
+            case 5:
+                return 0
+            case 4:
+                return 1
+            case 3:
+                return 3 if 3 in c.values() else 2
+            case 2:
+                return 4 if 3 in c.values() else 5
+            case 1:
+                return 6
 
     @property
     def max_value(self) -> int:
@@ -65,22 +62,21 @@ class JokerHand(Hand):
 
     @property
     def hand_type(self) -> int:
-        value: int = super().hand_type
+        hand_type: int = super().hand_type
         jokers: int = Counter(self.cards)[joker_matrix["J"]]
         if not jokers:
-            return value
-        if value == 0:
-            return 1
-        if value == 1:
-            return 3
-        if value == 2:
-            if jokers == 1:
-                return 4
-            return 5
-        if value == 3:
-            return 5
-        if value in (4, 5, 6):
-            return 6
+            return hand_type
+        match hand_type:
+            case 0:
+                return 1
+            case 1:
+                return 3
+            case 2:
+                return 4 if jokers == 1 else 5
+            case 3:
+                return 5
+            case _:
+                return 6
 
 
 class Solution:
