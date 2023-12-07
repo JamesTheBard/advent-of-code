@@ -80,6 +80,9 @@ class JokerHand(Hand):
 
 
 class Solution:
+    hands: list[Hand]
+    jokers: list[JokerHand]
+
     def __init__(self, input_file: Union[str, Path]):
         input_file = Path(input_file)
         self.hands, self.jokers = self.parse_hands(input_file)
