@@ -34,7 +34,7 @@ class Hand(NamedTuple):
 
     @property
     def max_value(self) -> int:
-        return len(cards) + 1
+        return len(cards)
 
     @property
     def hand_value(self) -> int:
