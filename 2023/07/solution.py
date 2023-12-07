@@ -1,8 +1,8 @@
 from collections import Counter
+from enum import Enum
 from operator import eq, ge, gt, le, lt
 from pathlib import Path
 from typing import NamedTuple, Union
-from enum import Enum
 
 cards = "23456789TJQKA"
 joker = "J23456789TQKA"
