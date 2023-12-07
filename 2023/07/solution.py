@@ -34,7 +34,7 @@ class Hand(NamedTuple):
 
     @property
     def max_value(self) -> int:
-        return max(cards_matrix.values()) + 1
+        return len(cards) + 1
 
     @property
     def hand_value(self) -> int:
@@ -64,14 +64,9 @@ class Hand(NamedTuple):
 class JokerHand(Hand):
 
     @property
-    def max_value(self) -> int:
-        return max(joker_matrix.values()) + 1
-
-    @property
     def hand_type(self) -> int:
-        value = super().hand_type
-        c = Counter(self.cards)
-        jokers = c[joker_matrix["J"]]
+        value: int = super().hand_type
+        jokers: int = Counter(self.cards)[joker_matrix["J"]]
         if not jokers:
             return value
         if value == 0:
