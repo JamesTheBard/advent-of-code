@@ -78,11 +78,11 @@ class JokerHand(Hand):
 
     @property
     def hand_type(self) -> HandType:
-        hand_type: int = super().hand_type
+        hand_type: HandType = super().hand_type
         jokers: int = Counter(self.cards)[joker_matrix["J"]]
         if not jokers:
             return hand_type
-        match HandType(hand_type):
+        match hand_type:
             case HandType.HIGH_CARD:
                 return HandType.ONE_PAIR
             case HandType.ONE_PAIR:
