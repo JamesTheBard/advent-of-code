@@ -53,10 +53,8 @@ class Hand:
 
     @property
     def hand_value(self) -> int:
-        value: int = sum(
-            i * (self.max_value ** j)
-            for j, i in enumerate(self.cards[::-1]))
-        return value + (self.hand_type.value * (self.max_value ** 5))
+        values: list[int] = [*self.cards[::-1], self.hand_type.value]
+        return sum(i * (self.max_value ** j) for j, i in enumerate(values))
 
     def _compare(self, f: Callable[[int, int], bool], other: "Hand") -> bool:
         return f(self.hand_value, other.hand_value)
