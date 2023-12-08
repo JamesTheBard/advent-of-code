@@ -7,8 +7,9 @@ from typing import Union
 
 class Solution:
     content: list[str]
-    method: str
     dirmap: dict[str, int]
+    method: str
+    nodes: dict[str, tuple[str, str]]
 
     def __init__(self, input_file: Union[str, Path]):
         self.content: list[str] = Path(input_file).open('r').readlines()
