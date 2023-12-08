@@ -86,10 +86,10 @@ class Solution:
 
     def __init__(self, input_file: Union[str, Path]):
         self.content = Path(input_file).open('r').readlines()
-        self.hands = self.parse_hand(has_jokers=False)
-        self.jokers = self.parse_hand(has_jokers=True)
+        self.hands = self.parse_hands(has_jokers=False)
+        self.jokers = self.parse_hands(has_jokers=True)
 
-    def parse_hand(self, has_jokers: bool) -> list[Hand]:
+    def parse_hands(self, has_jokers: bool) -> list[Hand]:
         hands: list[Hand] = list()
         hand_version: Type[Hand] = JokerHand if has_jokers else Hand
         matrix: dict[str, int] = joker_matrix if has_jokers else cards_matrix
