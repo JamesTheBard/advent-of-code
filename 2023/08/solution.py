@@ -36,8 +36,8 @@ class Solution:
         return self.navigate('AAA', 'ZZZ')
 
     def solve_part2(self) -> int:
-        nodes: list[str] = [i for i in self.nodes if i[-1] == 'A']
-        results: list[int] = [self.navigate(node, 'Z') for node in nodes]
+        nodes: tuple[str, ...] = tuple(i for i in self.nodes if i[-1] == 'A')
+        results: tuple[int, ...] = tuple(self.navigate(node, 'Z') for node in nodes)
         return lcm(*results)
 
 
