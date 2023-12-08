@@ -17,18 +17,18 @@ class Solution:
         self.states = tuple((i, j) for i, j in zip(times, distances))
 
     @staticmethod
-    def calculate(time: int, distance: int) -> int:
+    def calculate_wins(time: int, distance: int) -> int:
         t_half: float = time / 2
         t_min: int = trunc(t_half - sqrt((t_half ** 2) - distance)) + 1
         return time - (2 * t_min) + 1
 
     def solve_part1(self) -> int:
-        return prod(self.calculate(*i) for i in self.states)
+        return prod(self.calculate_wins(*i) for i in self.states)
 
     def solve_part2(self) -> int:
         time: int = int(''.join(str(i[0]) for i in self.states))
         distance: int = int(''.join(str(i[1]) for i in self.states))
-        return self.calculate(time, distance)
+        return self.calculate_wins(time, distance)
 
 
 if __name__ == "__main__":
