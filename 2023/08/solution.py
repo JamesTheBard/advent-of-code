@@ -7,8 +7,8 @@ from typing import Union
 
 class Solution:
     content: list[str]
+    directions: str
     dirmap: dict[str, int]
-    method: str
     nodes: dict[str, tuple[str, str]]
 
     def __init__(self, input_file: Union[str, Path]):
