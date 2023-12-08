@@ -1,15 +1,15 @@
 from collections import Counter
-from dataclasses import dataclass
 from enum import Enum
-from operator import eq, ge, gt, le, lt
 from pathlib import Path
-from typing import Callable, Union
+from typing import Union
 
 cards_list = "23456789TJQKA"
 joker_list = "J23456789TQKA"
 
 cards_matrix: dict[str, int] = {j: idx for idx, j in enumerate(cards_list)}
 joker_matrix: dict[str, int] = {j: idx for idx, j in enumerate(joker_list)}
+
+suit_size: int = len(cards_list)
 
 
 class HandType(Enum):
@@ -22,10 +22,14 @@ class HandType(Enum):
     FIVE_OF_A_KIND = 6
 
 
-@dataclass(frozen=True)
 class Hand:
     cards: tuple[int, ...]
     bid: int
+
+    def __init__(self, cards: tuple[int, ...], bid: int) -> None:
+        self.cards = cards
+        self.bid = bid
+        self.value = self._hand_value()
 
     @property
     def hand_type(self) -> HandType:
@@ -47,32 +51,9 @@ class Hand:
             case 1:
                 return HandType.FIVE_OF_A_KIND
 
-    @property
-    def max_value(self) -> int:
-        return len(cards_list)
-
-    @property
-    def hand_value(self) -> int:
+    def _hand_value(self) -> int:
         values: list[int] = [*self.cards[::-1], self.hand_type.value]
-        return sum(i * (self.max_value ** j) for j, i in enumerate(values))
-
-    def _compare(self, f: Callable[[int, int], bool], other: "Hand") -> bool:
-        return f(self.hand_value, other.hand_value)
-
-    def __le__(self, other: "Hand") -> bool:
-        return self._compare(le, other)
-
-    def __lt__(self, other: "Hand") -> bool:
-        return self._compare(lt, other)
-
-    def __ge__(self, other: "Hand") -> bool:
-        return self._compare(ge, other)
-
-    def __gt__(self, other: "Hand") -> bool:
-        return self._compare(gt, other)
-
-    def __eq__(self, other: "Hand") -> bool:
-        return self._compare(eq, other)
+        return sum(i * (suit_size ** j) for j, i in enumerate(values))
 
 
 class JokerHand(Hand):
@@ -118,13 +99,15 @@ class Solution:
             bid = int(line[-1])
             results_h.append(Hand(cards=cards, bid=bid))
             results_j.append(JokerHand(cards=jokers, bid=bid))
-        return sorted(results_h), sorted(results_j)
+        return results_h, results_j
 
     def solve_part1(self) -> int:
-        return sum((idx + 1) * i.bid for idx, i in enumerate(self.hands))
+        hands = sorted(self.hands, key=lambda x: x.value)
+        return sum((idx + 1) * i.bid for idx, i in enumerate(hands))
 
     def solve_part2(self) -> int:
-        return sum((idx + 1) * i.bid for idx, i in enumerate(self.jokers))
+        jokers = sorted(self.jokers, key=lambda x: x.value)
+        return sum((idx + 1) * i.bid for idx, i in enumerate(jokers))
 
 
 if __name__ == "__main__":
