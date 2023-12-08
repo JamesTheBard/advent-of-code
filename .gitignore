@@ -161,3 +161,6 @@ cython_debug/
 
 # AoC Stuff
 input.txt
+
+# Idea stuff
+.idea

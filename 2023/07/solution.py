@@ -1,14 +1,15 @@
 from collections import Counter
+from dataclasses import dataclass
 from enum import Enum
 from operator import eq, ge, gt, le, lt
 from pathlib import Path
-from typing import NamedTuple, Union
+from typing import Union
 
-cards = "23456789TJQKA"
-joker = "J23456789TQKA"
+cards_list = "23456789TJQKA"
+joker_list = "J23456789TQKA"
 
-cards_matrix = {j: idx for idx, j in enumerate(cards)}
-joker_matrix = {j: idx for idx, j in enumerate(joker)}
+cards_matrix: dict[str, int] = {j: idx for idx, j in enumerate(cards_list)}
+joker_matrix: dict[str, int] = {j: idx for idx, j in enumerate(joker_list)}
 
 
 class HandType(Enum):
@@ -21,8 +22,9 @@ class HandType(Enum):
     FIVE_OF_A_KIND = 6
 
 
-class Hand(NamedTuple):
-    cards: tuple[int]
+@dataclass(frozen=True)
+class Hand:
+    cards: tuple[int, ...]
     bid: int
 
     @property
@@ -47,12 +49,12 @@ class Hand(NamedTuple):
 
     @property
     def max_value(self) -> int:
-        return len(cards)
+        return len(cards_list)
 
     @property
     def hand_value(self) -> int:
         value: int = sum(
-            i * (self.max_value ** j) 
+            i * (self.max_value ** j)
             for j, i in enumerate(self.cards[::-1]))
         return value + (self.hand_type.value * (self.max_value ** 5))
 
@@ -106,17 +108,18 @@ class Solution:
         input_file = Path(input_file)
         self.hands, self.jokers = self.parse_hands(input_file)
 
-    def parse_hands(self, input_file: Path) -> tuple[list[Hand], list[JokerHand]]:
+    @staticmethod
+    def parse_hands(input_file: Path) -> tuple[list[Hand], list[Hand]]:
         content: list[str] = input_file.open('r').readlines()
         results_h: list[Hand] = list()
-        results_j: list[JokerHand] = list()
+        results_j: list[Hand] = list()
         for line in content:
             line = line.strip().split()
-            cards = tuple(cards_matrix[i] for i in line[0])
-            jokers = tuple(joker_matrix[i] for i in line[0])
+            cards: tuple[int, ...] = tuple(cards_matrix[i] for i in line[0])
+            jokers: tuple[int, ...] = tuple(joker_matrix[i] for i in line[0])
             bid = int(line[-1])
-            results_h.append(Hand(cards, bid))
-            results_j.append(JokerHand(jokers, bid))
+            results_h.append(Hand(cards=cards, bid=bid))
+            results_j.append(JokerHand(cards=jokers, bid=bid))
         return sorted(results_h), sorted(results_j)
 
     def solve_part1(self) -> int:
@@ -127,6 +130,6 @@ class Solution:
 
 
 if __name__ == "__main__":
-    s = Solution("input.txt")
+    s = Solution("example.txt")
     print(s.solve_part1())
     print(s.solve_part2())
