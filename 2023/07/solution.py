@@ -101,12 +101,12 @@ class Solution:
         return hands
 
     def solve_part1(self) -> int:
-        hands = sorted(self.hands, key=lambda x: x.value)
+        hands: list[Hand] = sorted(self.hands, key=lambda x: x.value)
         return sum((idx + 1) * i.bid for idx, i in enumerate(hands))
 
     def solve_part2(self) -> int:
-        jokers = sorted(self.jokers, key=lambda x: x.value)
-        return sum((idx + 1) * i.bid for idx, i in enumerate(jokers))
+        hands: list[Hand] = sorted(self.jokers, key=lambda x: x.value)
+        return sum((idx + 1) * i.bid for idx, i in enumerate(hands))
 
 
 if __name__ == "__main__":
