@@ -1,7 +1,7 @@
 from collections import Counter
 from enum import Enum
 from pathlib import Path
-from typing import Union
+from typing import Union, Type
 
 cards_list = "23456789TJQKA"
 joker_list = "J23456789TQKA"
@@ -85,22 +85,20 @@ class Solution:
     jokers: list[Hand]
 
     def __init__(self, input_file: Union[str, Path]):
-        input_file = Path(input_file)
-        self.hands, self.jokers = self.parse_hands(input_file)
+        self.content = Path(input_file).open('r').readlines()
+        self.hands = self.parse_hand(has_jokers=False)
+        self.jokers = self.parse_hand(has_jokers=True)
 
-    @staticmethod
-    def parse_hands(input_file: Path) -> tuple[list[Hand], list[Hand]]:
-        content: list[str] = input_file.open('r').readlines()
-        results_h: list[Hand] = list()
-        results_j: list[Hand] = list()
-        for line in content:
+    def parse_hand(self, has_jokers: bool) -> list[Hand]:
+        hands: list[Hand] = list()
+        hand_version: Type[Hand] = JokerHand if has_jokers else Hand
+        matrix: dict[str, int] = joker_matrix if has_jokers else cards_matrix
+        for line in self.content:
             line = line.strip().split()
-            cards: tuple[int, ...] = tuple(cards_matrix[i] for i in line[0])
-            jokers: tuple[int, ...] = tuple(joker_matrix[i] for i in line[0])
-            bid = int(line[-1])
-            results_h.append(Hand(cards=cards, bid=bid))
-            results_j.append(JokerHand(cards=jokers, bid=bid))
-        return results_h, results_j
+            cards: tuple[int, ...] = tuple(matrix[i] for i in line[0])
+            bid: int = int(line[-1])
+            hands.append(hand_version(cards=cards, bid=bid))
+        return hands
 
     def solve_part1(self) -> int:
         hands = sorted(self.hands, key=lambda x: x.value)
