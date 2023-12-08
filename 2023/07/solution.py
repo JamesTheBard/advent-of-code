@@ -23,8 +23,9 @@ class HandType(Enum):
 
 
 class Hand:
-    cards: tuple[int, ...]
     bid: int
+    cards: tuple[int, ...]
+    hand_type: HandType
     value: int
 
     def __init__(self, cards: tuple[int, ...], bid: int) -> None:
@@ -81,6 +82,7 @@ class JokerHand(Hand):
 
 
 class Solution:
+    content: list[str]
     hands: list[Hand]
     jokers: list[Hand]
 
