@@ -94,9 +94,9 @@ class Solution:
         hand_version: Type[Hand] = JokerHand if has_jokers else Hand
         matrix: dict[str, int] = joker_matrix if has_jokers else cards_matrix
         for line in self.content:
-            line = line.strip().split()
-            cards: tuple[int, ...] = tuple(matrix[i] for i in line[0])
-            bid: int = int(line[-1])
+            cards_raw, bid_raw = line.strip().split()[:2]
+            cards: tuple[int, ...] = tuple(matrix[i] for i in cards_raw)
+            bid: int = int(bid_raw)
             hands.append(hand_version(cards=cards, bid=bid))
         return hands
 
