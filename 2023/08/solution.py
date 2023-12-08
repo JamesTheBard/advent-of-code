@@ -1,8 +1,8 @@
-from typing import Union
-from pathlib import Path
+import re
 from itertools import cycle
 from math import lcm
-import re
+from pathlib import Path
+from typing import Union
 
 
 class Solution:
