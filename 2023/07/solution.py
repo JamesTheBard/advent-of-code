@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from operator import eq, ge, gt, le, lt
 from pathlib import Path
-from typing import Union
+from typing import Union, Callable
 
 cards_list = "23456789TJQKA"
 joker_list = "J23456789TQKA"
@@ -58,7 +58,7 @@ class Hand:
             for j, i in enumerate(self.cards[::-1]))
         return value + (self.hand_type.value * (self.max_value ** 5))
 
-    def _compare(self, f, other: "Hand") -> bool:
+    def _compare(self, f: Callable[[int, int], bool], other: "Hand") -> bool:
         return f(self.hand_value, other.hand_value)
 
     def __le__(self, other: "Hand") -> bool:
