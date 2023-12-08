@@ -13,7 +13,7 @@ class Solution:
 
     def __init__(self, input_file: Union[str, Path]):
         self.content: list[str] = Path(input_file).open('r').readlines()
-        self.method, self.nodes = self.parse_input()
+        self.directions, self.nodes = self.parse_input()
         self.dirmap: dict[str, int] = {'L': 0, 'R': 1}
 
     def parse_input(self) -> (str, dict[str, tuple[str, str]]):
@@ -27,7 +27,7 @@ class Solution:
     def navigate(self, start: str, end: str) -> int:
         node: str = start
         offset: int = 3 - len(end)
-        for steps, direction in enumerate(cycle(self.method)):
+        for steps, direction in enumerate(cycle(self.directions)):
             node = self.nodes[node][self.dirmap[direction]]
             if node[offset:] == end:
                 return steps + 1
