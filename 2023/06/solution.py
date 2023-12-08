@@ -9,21 +9,22 @@ class Solution:
         input_file: Path = Path(input_file)
         self.states: tuple[tuple[int]] = tuple()
         self.process_input(input_file)
-        
+
     def process_input(self, input_file: Path) -> None:
         content: list[str] = input_file.open('r').readlines()
-        times: tuple[int] = map(lambda i: int(i), re.findall(r'(\d+)', content[0]))
-        distances: tuple[int] = map(lambda i: int(i), re.findall(r'(\d+)', content[1]))
+        times: map = map(lambda i: int(i), re.findall(r'(\d+)', content[0]))
+        distances: map = map(lambda i: int(i), re.findall(r'(\d+)', content[1]))
         self.states = tuple((i, j) for i, j in zip(times, distances))
-        
-    def calculate(self, time: int, distance: int) -> int:
+
+    @staticmethod
+    def calculate(time: int, distance: int) -> int:
         t_half: float = time / 2
         t_min: int = trunc(t_half - sqrt((t_half ** 2) - distance)) + 1
         return time - (2 * t_min) + 1
-    
+
     def solve_part1(self) -> int:
         return prod(self.calculate(*i) for i in self.states)
-    
+
     def solve_part2(self) -> int:
         time: int = int(''.join(str(i[0]) for i in self.states))
         distance: int = int(''.join(str(i[1]) for i in self.states))
