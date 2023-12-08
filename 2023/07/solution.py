@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from operator import eq, ge, gt, le, lt
 from pathlib import Path
-from typing import Union, Callable
+from typing import Callable, Union
 
 cards_list = "23456789TJQKA"
 joker_list = "J23456789TQKA"
