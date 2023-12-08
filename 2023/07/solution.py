@@ -102,7 +102,7 @@ class JokerHand(Hand):
 
 class Solution:
     hands: list[Hand]
-    jokers: list[JokerHand]
+    jokers: list[Hand]
 
     def __init__(self, input_file: Union[str, Path]):
         input_file = Path(input_file)
