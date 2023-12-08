@@ -37,9 +37,7 @@ class Solution:
 
     def solve_part2(self) -> int:
         nodes: list[str] = [i for i in self.nodes if i[-1] == 'A']
-        results: list[int] = list()
-        for node in nodes:
-            results.append(self.navigate(node, 'Z'))
+        results: list[int] = [self.navigate(node, 'Z') for node in nodes]
         return lcm(*results)
 
 
