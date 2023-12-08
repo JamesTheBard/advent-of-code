@@ -25,6 +25,7 @@ class HandType(Enum):
 class Hand:
     cards: tuple[int, ...]
     bid: int
+    value: int
 
     def __init__(self, cards: tuple[int, ...], bid: int) -> None:
         self.cards = cards
