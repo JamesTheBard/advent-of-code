@@ -30,7 +30,7 @@ class Hand:
     def __init__(self, cards: tuple[int, ...], bid: int) -> None:
         self.cards = cards
         self.bid = bid
-        self.value = self._hand_value()
+        self.value = self._get_hand_value()
 
     @property
     def hand_type(self) -> HandType:
@@ -52,7 +52,7 @@ class Hand:
             case 1:
                 return HandType.FIVE_OF_A_KIND
 
-    def _hand_value(self) -> int:
+    def _get_hand_value(self) -> int:
         values: list[int] = [*self.cards[::-1], self.hand_type.value]
         return sum(i * (suit_size ** j) for j, i in enumerate(values))
 
