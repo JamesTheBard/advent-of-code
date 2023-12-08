@@ -18,11 +18,11 @@ class Solution:
 
     def parse_input(self) -> (str, dict[str, tuple[str, str]]):
         nodes: dict[str, tuple[str, str]] = dict()
-        method: str = self.content[0].strip()
+        directions: str = self.content[0].strip()
         for line in self.content[2:]:
             if m := re.search(r'(\w{3}).+(\w{3}).+(\w{3})', line):
                 nodes[m.group(1)] = (m.group(2), m.group(3))
-        return method, nodes
+        return directions, nodes
 
     def navigate(self, start: str, end: str) -> int:
         node: str = start
