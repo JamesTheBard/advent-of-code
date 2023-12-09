@@ -22,11 +22,12 @@ class Solution:
     @staticmethod
     def extrapolate(reading: Reading) -> Reading:
         left_values, right_values = [reading[0]], [reading[-1]]
+        results: Reading = reading
         while True:
-            reading: tuple[int, ...] = tuple(j - i for i, j in zip(reading, reading[1:]))
-            left_values.append(reading[0])
-            right_values.append(reading[-1])
-            if len(set(reading)) == 1:
+            results: tuple[int, ...] = tuple(j - i for i, j in zip(results, results[1:]))
+            left_values.append(results[0])
+            right_values.append(results[-1])
+            if len(set(results)) == 1:
                 left_value = reduce(lambda i, j: j - i, left_values[::-1])
                 right_value = sum(right_values)
                 return left_value, *reading, right_value
@@ -39,6 +40,6 @@ class Solution:
 
 
 if __name__ == '__main__':
-    s = Solution("input.txt")
+    s = Solution("example.txt")
     print(s.solve_part1())
     print(s.solve_part2())
