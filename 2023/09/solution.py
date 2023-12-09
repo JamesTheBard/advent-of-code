@@ -4,8 +4,10 @@ from typing import Union
 
 
 class Solution:
+    readings: tuple[tuple[int, ...], ...]
+
     def __init__(self, input_file: Union[str, Path]):
-        input_file = Path(input_file)
+        input_file: Path = Path(input_file)
         self.readings = self.process_inputs(input_file)
 
     @staticmethod
