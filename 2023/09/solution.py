@@ -16,14 +16,14 @@ class Solution:
         return tuple(tuple(int(i) for i in line.split()) for line in content)
 
     @staticmethod
-    def extrapolate(results: tuple[int, ...]) -> tuple[int, int]:
-        left_value, right_value = [results[0]], [results[-1]]
+    def extrapolate(reading: tuple[int, ...]) -> tuple[int, int]:
+        left_values, right_values = [reading[0]], [reading[-1]]
         while True:
-            results: tuple[int, ...] = tuple(j - i for i, j in zip(results, results[1:]))
-            left_value.append(results[0])
-            right_value.append(results[-1])
-            if len(set(results)) == 1:
-                return reduce(lambda i, j: j - i, left_value[::-1]), sum(right_value)
+            reading: tuple[int, ...] = tuple(j - i for i, j in zip(reading, reading[1:]))
+            left_values.append(reading[0])
+            right_values.append(reading[-1])
+            if len(set(reading)) == 1:
+                return reduce(lambda i, j: j - i, left_values[::-1]), sum(right_values)
 
     def solve_part1(self) -> int:
         return sum(self.extrapolate(i)[1] for i in self.readings)
