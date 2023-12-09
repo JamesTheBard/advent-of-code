@@ -11,10 +11,7 @@ class Solution:
     @staticmethod
     def process_inputs(input_file: Path) -> tuple[tuple[int, ...], ...]:
         content: list[str] = input_file.open('r').readlines()
-        output: list[tuple[int, ...]] = list()
-        for line in content:
-            output.append(tuple(int(i) for i in line.split()))
-        return tuple(output)
+        return tuple(tuple(int(i) for i in line.split()) for line in content)
 
     @staticmethod
     def extrapolate(results: tuple[int, ...]) -> tuple[int, int]:
