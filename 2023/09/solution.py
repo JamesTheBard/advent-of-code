@@ -23,14 +23,13 @@ class Solution:
     def extrapolate(reading: Reading) -> Reading:
         left_values, right_values = [reading[0]], [reading[-1]]
         results: Reading = reading
-        while True:
+        while len(set(results)) != 1:
             results: tuple[int, ...] = tuple(j - i for i, j in zip(results, results[1:]))
             left_values.append(results[0])
             right_values.append(results[-1])
-            if len(set(results)) == 1:
-                left_value = reduce(lambda i, j: j - i, left_values[::-1])
-                right_value = sum(right_values)
-                return left_value, *reading, right_value
+        left_value = reduce(lambda i, j: j - i, left_values[::-1])
+        right_value = sum(right_values)
+        return left_value, *reading, right_value
 
     def solve_part1(self) -> int:
         return sum(i[-1] for i in self.results)
