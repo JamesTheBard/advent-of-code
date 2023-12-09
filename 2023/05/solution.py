@@ -1,87 +1,87 @@
 import re
-from dataclasses import dataclass
 from itertools import batched, chain
 from pathlib import Path
-from typing import NamedTuple, Union
+from typing import Union
 
-Seeds = list[range]
-RangeMap = list[range, int]
+Transform = tuple[range, int]
+TransformBlock = list[Transform]
 
 
 class Solution:
+    seeds: tuple[int, ...]
+    seed_ranges: tuple[range, ...]
+    transform_blocks: list[TransformBlock]
 
     def __init__(self, input_file: Union[str, Path]):
-        self.seeds: list[range] = list()
-        self.ranges: list[RangeMap] = list()
-        self.raw_seeds: list[int]
-        self.process_input(Path(input_file))
+        self.transform_blocks: list[TransformBlock] = list()
+        self.parse_input(Path(input_file))
 
-    def process_input(self, input_file: Path):
-        content = input_file.open('r').readlines()
-        regex = r'(\d+)'
-        self.raw_seeds = [int(i) for i in re.findall(regex, content.pop(0))]
-        self.seeds = [range(i, i + j - 1)
-                      for i, j in batched(self.raw_seeds, 2)]
-        ranges = list()
-        for line in content:
-            if r := [int(i) for i in re.findall(regex, line)]:
-                ranges.append((range(r[1], r[1] + r[2] - 1), r[0] - r[1]))
-            elif ranges:
-                self.ranges.append(ranges)
-                ranges = list()
-        self.ranges.append(ranges)
+    def parse_input(self, input_file: Path) -> None:
+        content: list[str] = input_file.open('r').readlines()
+        self.seeds: tuple[int, ...] = tuple(int(i) for i in re.findall(r'(\d+)', content[0]))
+        self.seed_ranges: tuple[range, ...] = tuple(range(i, i + j) for i, j in batched(self.seeds, n=2))
+        transforms: list[Transform] = list()
+        for line in content[2:]:
+            if m := re.findall(r'(\d+)', line):
+                m = tuple(int(i) for i in m)
+                transforms.append((range(m[1], m[1] + m[2]), m[0] - m[1]))
+            elif transforms:
+                self.transform_blocks.append(transforms)
+                transforms = list()
+        self.transform_blocks.append(transforms)
 
-    def transform(self, seed: range, ranges: list[RangeMap]) -> list[range]:
+    def apply_block_transform(self, seed: range, transforms: list[Transform]) -> list:
 
-        def overlap(i: range, j: range) -> bool:
-            return i.start < j.stop and i.stop > j.start
+        def overlap(source: range, destination: range) -> bool:
+            return destination.start < source.stop and destination.stop > source.start
 
-        def shift(i: range, offset: int) -> range:
-            return range(i.start + offset, i.stop + offset)
+        def shift(source: range, r_offset: int) -> range:
+            return range(source.start + r_offset, source.stop + r_offset)
 
-        for r, offset in ranges:
+        for r, offset in transforms:
             if not overlap(seed, r):
                 continue
 
             if r.start <= seed.start and r.stop >= seed.stop:
                 return [shift(seed, offset)]
 
-            if r.start >= seed.start and r.stop <= seed.stop:
-                return [
-                    range(seed.start, r.start),
-                    shift(r, offset),
-                    *self.transform(range(r.stop, seed.stop), ranges)
-                ]
-
             if r.start <= seed.start and r.stop <= seed.stop:
                 return [
                     shift(range(seed.start, r.stop), offset),
-                    *self.transform(range(r.stop, seed.stop), ranges)
+                    *self.apply_block_transform(range(r.stop, seed.stop), transforms),
                 ]
 
             if r.start >= seed.start and r.stop >= seed.stop:
                 return [
-                    range(seed.start, r.start),
+                    *self.apply_block_transform(range(seed.start, r.start), transforms),
                     shift(range(r.start, seed.stop), offset),
+                ]
+
+            if seed.start <= r.start and seed.stop >= r.stop:
+                return [
+                    *self.apply_block_transform(range(seed.start, r.start), transforms),
+                    shift(range(r.start, r.stop), offset),
+                    *self.apply_block_transform(range(r.stop, seed.stop), transforms),
                 ]
 
         return [seed]
 
+    def get_lowest_location(self, seeds: tuple[range, ...]) -> int:
+        seeds = [seeds]
+        for block in self.transform_blocks:
+            seeds = tuple(self.apply_block_transform(seed, block) for seed in chain.from_iterable(seeds))
+        seeds = list(chain.from_iterable(seeds))
+        return sorted(seeds, key=lambda i: i.start)[0].start
+
     def solve_part1(self) -> int:
-        pass
+        seeds = tuple(range(seed, seed + 1) for seed in self.seeds)
+        return self.get_lowest_location(seeds)
 
     def solve_part2(self) -> int:
-        results = list()
-        for seed in self.seeds:
-            ranges = [seed]
-            for r in self.ranges:
-                r = sorted(r, key=lambda x: x[0].start)
-                ranges = list(chain.from_iterable(
-                    self.transform(i, r) for i in ranges))
-            results.append(sorted(ranges, key=lambda x: x.start)[0].start)
-        return min(results)
+        return self.get_lowest_location(self.seed_ranges)
 
 
 if __name__ == "__main__":
     s = Solution("input.txt")
+    print(s.solve_part1())
     print(s.solve_part2())
