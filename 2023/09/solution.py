@@ -2,21 +2,23 @@ from functools import reduce
 from pathlib import Path
 from typing import Union
 
+Reading = tuple[int, ...]
+
 
 class Solution:
-    readings: tuple[tuple[int, ...], ...]
+    readings: tuple[Reading, ...]
 
     def __init__(self, input_file: Union[str, Path]):
         input_file: Path = Path(input_file)
         self.readings = self.process_inputs(input_file)
 
     @staticmethod
-    def process_inputs(input_file: Path) -> tuple[tuple[int, ...], ...]:
+    def process_inputs(input_file: Path) -> tuple[Reading, ...]:
         content: list[str] = input_file.open('r').readlines()
         return tuple(tuple(int(i) for i in line.split()) for line in content)
 
     @staticmethod
-    def extrapolate(reading: tuple[int, ...]) -> tuple[int, int]:
+    def extrapolate(reading: Reading) -> tuple[int, int]:
         left_values, right_values = [reading[0]], [reading[-1]]
         while True:
             reading: tuple[int, ...] = tuple(j - i for i, j in zip(reading, reading[1:]))
