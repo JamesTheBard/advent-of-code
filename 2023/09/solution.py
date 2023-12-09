@@ -29,7 +29,7 @@ class Solution:
             if len(set(reading)) == 1:
                 left_value = reduce(lambda i, j: j - i, left_values[::-1])
                 right_value = sum(right_values)
-                return left_value, *Reading, right_value
+                return left_value, *reading, right_value
 
     def solve_part1(self) -> int:
         return sum(i[-1] for i in self.results)
