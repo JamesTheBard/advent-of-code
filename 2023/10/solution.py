@@ -78,23 +78,12 @@ class Solution:
                     return path
                 path.append(last_move)
 
-    def generate_map(self, p: list[Coordinate]):
-        output = list()
-        for y in range(self.max_y + 1):
-            line = list()
-            for x in range(self.max_x + 1):
-                c = Coordinate(x, y)
-                if c in p:
-                    symbol = c.get_symbol(self.content)
-                    if symbol == "S":
-                        # line.append("-")
-                        line.append(self.get_start_symbol(self.start, p))
-                    else:
-                        line.append(c.get_symbol(self.content))
-                else:
-                    line.append(".")
-            output.append(''.join(line))
-        return output
+    def generate_map(self, path_map: list[Coordinate]):
+        new_map: list[list[str]] = [["." for i in range(self.max_x + 1)] for j in range(self.max_y + 1)]
+        for p in path_map:
+            new_map[p.y][p.x] = p.get_symbol(self.content)
+        new_map[self.start.y][self.start.x] = self.get_start_symbol(self.start, path_map)
+        return [''.join(i) for i in new_map]
 
     def get_start_symbol(self, start, path: list[Coordinate]) -> str:
         moves = tuple(i - j for i, j in zip([start] * 2, [path[1], path[-1]]))
