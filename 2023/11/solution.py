@@ -16,7 +16,7 @@ class Coordinate(NamedTuple):
         return self._calculate(add, other)
 
     def __mul__(self, other: int) -> "Coordinate":
-        return Coordinate(*(self.x * other, self.y * other))
+        return Coordinate(self.x * other, self.y * other)
 
     def __or__(self, other: "Coordinate") -> int:
         return sum(abs(i) for i in self._calculate(sub, other))
