@@ -18,9 +18,6 @@ class Coordinate(NamedTuple):
     def __sub__(self, other):
         return self._calculate(sub, other)
 
-    def get_symbol(self, source: list[str]):
-        return source[self.y][self.x]
-
 
 move_directory: dict[str, tuple[Coordinate, Coordinate]] = {
     "F": (Coordinate(0, 1), Coordinate(1, 0)),
@@ -75,12 +72,12 @@ class Solution:
         return [''.join(i) for i in new_map]
 
     def get_loop_area(self, path_map) -> int:
-        regex = r'F-*?J|L-*?7|\|'
+        regex = re.compile(r'F-*?J|L-*?7|\|')
         area: int = 0
         for line in self.generate_map(path_map):
-            for l_match, r_match in batched(re.finditer(regex, line), n=2):
+            for l_match, r_match in batched(regex.finditer(line), n=2):
                 m_start, m_end = l_match.end(), r_match.start()
-                area += line[m_start:m_end].count(".")
+                area += line.count(".", m_start, m_end)
         return area
 
     def solve_part1(self) -> int:
