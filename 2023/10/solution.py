@@ -3,6 +3,7 @@ from itertools import product, batched
 from operator import add, sub
 from pathlib import Path
 from typing import NamedTuple, Union
+from math import ceil
 
 
 class Coordinate(NamedTuple):
@@ -82,7 +83,7 @@ class Solution:
 
     def solve_part1(self) -> int:
         path_len = len(self.loop_path)
-        return path_len // 2 + (path_len % 2)
+        return ceil(path_len / 2)
 
     def solve_part2(self) -> int:
         return self.get_loop_area(self.loop_path)
