@@ -54,13 +54,13 @@ class Solution:
         results: dict[Coordinate, str] = {self.start: 'S'}
         coord, symbol = self.start, 'S'
         keys = coordinates.keys()
-        last_moves: list = [coord]
+        last_moves: tuple = tuple(coord)
         while True:
             n_coord = tuple(coord + i for i in move_directory[symbol] if coord + i not in last_moves)
             n_coord = tuple(i for i in n_coord if i in keys)[0]
             if n_coord == self.start:
                 break
-            last_moves = [*last_moves[-2:], n_coord]
+            last_moves = (last_moves[-1], n_coord)
             results[n_coord] = coordinates[n_coord]
             coord, symbol = n_coord, coordinates[n_coord]
         keys = list(results.keys())
@@ -76,14 +76,11 @@ class Solution:
 
     def get_loop_area(self, path_map) -> int:
         regex = r'(?:F-*?J|L-*?7|\|)'
-        ignore = r'(?:F-*?7|L-*?J)'
         area: int = 0
         for line in self.generate_map(path_map):
             for l_match, r_match in batched(re.finditer(regex, line), n=2):
                 m_start, m_end = l_match.end(), r_match.start()
-                a = m_end - m_start
-                a -= sum(len(i) for i in re.findall(ignore, line[m_start:m_end]))
-                area += a
+                area += line[m_start:m_end].count(".")
         return area
 
     def solve_part1(self) -> int:
