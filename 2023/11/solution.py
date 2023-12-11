@@ -47,7 +47,7 @@ class Solution:
         return new_galaxies
 
     def solve(self, factor: int) -> int:
-        galaxies = self.expand_universe(self.galaxies, factor)
+        galaxies: list[Coordinate] = self.expand_universe(self.galaxies, factor)
         return sum(i | j for i, j in combinations(galaxies, 2))
 
 
