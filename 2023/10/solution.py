@@ -75,7 +75,7 @@ class Solution:
         return [''.join(i) for i in new_map]
 
     def get_loop_area(self, path_map) -> int:
-        regex = r'(?:F-*?J|L-*?7|\|)'
+        regex = r'F-*?J|L-*?7|\|'
         area: int = 0
         for line in self.generate_map(path_map):
             for l_match, r_match in batched(re.finditer(regex, line), n=2):
