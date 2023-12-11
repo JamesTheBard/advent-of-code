@@ -76,9 +76,7 @@ class Solution:
         regex = re.compile(r'F-*?J|L-*?7|\|')
         area: int = 0
         for line in self.generate_map(path_map):
-            for l_match, r_match in batched(regex.finditer(line), n=2):
-                m_start, m_end = l_match.end(), r_match.start()
-                area += line.count(".", m_start, m_end)
+            area += sum(line.count(".", i.end(), j.start()) for i, j in batched(regex.finditer(line), n=2))
         return area
 
     def solve_part1(self) -> int:
