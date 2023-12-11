@@ -1,8 +1,8 @@
-from pathlib import Path
-from typing import Union, NamedTuple
-from operator import add, sub
-from itertools import product, batched
 import re
+from itertools import product, batched
+from operator import add, sub
+from pathlib import Path
+from typing import NamedTuple, Union
 
 
 class Coordinate(NamedTuple):
@@ -35,65 +35,50 @@ move_directory: dict[str, tuple[Coordinate, Coordinate]] = {
 
 
 class Solution:
-    content: list[str]
-
     def __init__(self, input_file: Union[str, Path]):
-        self.start, self.content = self.parse_input(Path(input_file))
-        self.max_x, self.max_y = len(self.content[0]) - 1, len(self.content) - 1
-        self.path: list[Coordinate] = self.search(self.start)
-        self.new_map: list[str] = self.generate_map(self.path)
+        self.max_x, self.max_y = 0, 0
+        self.coordinates: dict[Coordinate, str] = self.get_coordinates(Path(input_file))
+        self.start: Coordinate = next(i for i, j in self.coordinates.items() if j == 'S')
+        self.loop_path: dict[Coordinate, str] = self.get_loop(self.coordinates)
 
-    @staticmethod
-    def parse_input(input_file: Path) -> tuple[Coordinate, list[str]]:
-        content: list[str] = [i.strip() for i in input_file.open('r').readlines()]
-        match: tuple[int, re.Match] = next((idx, re.search(r'S', i)) for idx, i in enumerate(content) if 'S' in i)
-        return Coordinate(match[1].start(), match[0]), content
+    def get_coordinates(self, input_file: Path) -> dict[Coordinate, str]:
+        content = input_file.open('r').readlines()
+        self.max_y, self.max_x = len(content), len(content[0])
+        coordinates: dict[Coordinate, str] = dict()
+        for y, line in enumerate(content):
+            for m in re.finditer(r'([^.])', line):
+                coordinates[Coordinate(m.start(), y)] = m.group(1)
+        return coordinates
 
-    def new_moves(self, coord: Coordinate) -> list[Coordinate]:
-        move_len, symbol = len(move_directory), coord.get_symbol(self.content)
-        moves: list[Coordinate] = [i + j for i, j in zip([coord] * move_len, move_directory[symbol])]
-        return [i for i in moves
-                if 0 <= i.x <= self.max_x
-                and 0 <= i.y <= self.max_y
-                and i.get_symbol(self.content) != "."]
-
-    def prep_start(self, start: Coordinate) -> list[Coordinate]:
-        moves = self.new_moves(start)
-        results = list()
-        for move in moves:
-            offset, symbol = start - move, move.get_symbol(self.content)
-            if offset in move_directory[symbol]:
-                results.append(move)
+    def get_loop(self, coordinates: dict[Coordinate, str]) -> dict[Coordinate, str]:
+        results: dict[Coordinate, str] = {self.start: 'S'}
+        coord, symbol = self.start, 'S'
+        keys = coordinates.keys()
+        last_moves: list = [coord]
+        while True:
+            n_coord = tuple(coord + i for i in move_directory[symbol] if coord + i not in last_moves)
+            n_coord = tuple(i for i in n_coord if i in keys)[0]
+            if n_coord == self.start:
+                break
+            last_moves = [*last_moves[-2:], n_coord]
+            results[n_coord] = coordinates[n_coord]
+            coord, symbol = n_coord, coordinates[n_coord]
+        keys = list(results.keys())
+        moves = tuple(i - j for i, j in zip([self.start] * 2, [keys[1], keys[-1]]))
+        results[self.start] = next(i for i, j in move_directory.items() if set(j) == set(moves))
         return results
 
-    def search(self, start: Coordinate) -> list[Coordinate]:
-        starting_points: list[Coordinate] = self.prep_start(start)
-        for s in starting_points:
-            path: list[Coordinate] = [start, s]
-            last_move, cache = s, list()
-            while last_move:
-                cache = [*cache[-2:], last_move]
-                last_move = [i for i in self.new_moves(last_move) if i not in cache and i is not start][0]
-                if last_move == start:
-                    return path
-                path.append(last_move)
-
-    def generate_map(self, path_map: list[Coordinate]):
+    def generate_map(self, path_map: dict[Coordinate, str]) -> list[str]:
         new_map: list[list[str]] = [["." for i in range(self.max_x + 1)] for j in range(self.max_y + 1)]
-        for p in path_map:
-            new_map[p.y][p.x] = p.get_symbol(self.content)
-        new_map[self.start.y][self.start.x] = self.get_start_symbol(self.start, path_map)
+        for coord, symbol in path_map.items():
+            new_map[coord.y][coord.x] = symbol
         return [''.join(i) for i in new_map]
 
-    def get_start_symbol(self, start, path: list[Coordinate]) -> str:
-        moves = tuple(i - j for i, j in zip([start] * 2, [path[1], path[-1]]))
-        return next(i for i, j in move_directory.items() if set(j) == set(moves))
-
-    def get_loop_area(self, pipe_map: list[str]) -> int:
+    def get_loop_area(self, path_map) -> int:
         regex = r'(?:F-*?J|L-*?7|\|)'
         ignore = r'(?:F-*?7|L-*?J)'
         area: int = 0
-        for line in pipe_map:
+        for line in self.generate_map(path_map):
             for l_match, r_match in batched(re.finditer(regex, line), n=2):
                 m_start, m_end = l_match.end(), r_match.start()
                 a = m_end - m_start
@@ -101,11 +86,12 @@ class Solution:
                 area += a
         return area
 
-    def solve_part1(self):
-        return len(self.path) // 2 + (len(self.path) % 2)
+    def solve_part1(self) -> int:
+        path_len = len(self.loop_path)
+        return path_len // 2 + (path_len % 2)
 
-    def solve_part2(self):
-        return self.get_loop_area(self.new_map)
+    def solve_part2(self) -> int:
+        return self.get_loop_area(self.loop_path)
 
 
 if __name__ == "__main__":
