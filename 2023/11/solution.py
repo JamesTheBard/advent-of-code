@@ -41,7 +41,7 @@ class Solution:
         horizontal: set[int] = set(range(len(self.content[0]))) - set(i.y for i in self.galaxies)
         new_galaxies: list[Coordinate] = list()
         for g in galaxies:
-            offset = Coordinate(*(len([i for i in vertical if i < g.x]), len([i for i in horizontal if i < g.y])))
+            offset = Coordinate(len([i for i in vertical if i < g.x]), len([i for i in horizontal if i < g.y]))
             offset *= (factor - 1)
             new_galaxies.append(g + offset)
         return new_galaxies
