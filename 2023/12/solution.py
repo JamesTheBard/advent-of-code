@@ -36,7 +36,7 @@ class Solution:
                     comparison: str = '.' * pos + '#' * valves + ('.' * (idx < (len(spring_set[1]) - 1)))
                     end: int = len(comparison)
                     if end > len(q):
-                        continue
+                        break
                     if compare(comparison, q[:end]):
                         try:
                             new_queue[q[end:]] += weight
