@@ -1,32 +1,26 @@
 import re
-from typing import Union
 from pathlib import Path
+from typing import Union
 
 SpringSet = tuple[str, tuple[int, ...]]
 
 
 class Solution:
-    springs: tuple[SpringSet, ...]
+    input_file: Path
 
     def __init__(self, input_file: Union[str, Path]):
         self.input_file = Path(input_file)
-        self.springs: tuple[SpringSet, ...] = self._parse_inputs(Path(input_file))
+
+    def translate_map(self, factor: int = 1) -> tuple[SpringSet, ...]:
+        content: list[str] = self.input_file.open('r').readlines()
+        springs: list[str] = [line.split()[0] for line in content]
+        arrangement: list[tuple[int, ...]] = [tuple(int(j) for j in re.findall(r'(\d+)', i)) for i in content]
+        springs = ['?'.join([i] * factor).strip('.') for i in springs]
+        arrangement = [i * factor for i in arrangement]
+        return tuple(zip(springs, arrangement))
 
     @staticmethod
-    def _parse_inputs(input_file: Path) -> tuple[SpringSet, ...]:
-        content: list[str] = input_file.open('r').readlines()
-        springs: list[str] = [re.sub('[.]+', '.', line.split()[0].strip('.')) for line in content]
-        arrangement: list[tuple[int, ...]] = [tuple(int(j) for j in re.findall(r'(\d+)', i)) for i in content]
-        return tuple(zip(springs, arrangement))
-
-    def translate_map(self) -> tuple[SpringSet, ...]:
-        content: list[str] = self.input_file.open('r').readlines()
-        springs: list[str] = [re.sub('[.]+', '.', '?'.join([line.split()[0]] * 5).strip('.')) for line in content]
-        arrangement: list[tuple[int, ...]] = [tuple(int(j) for j in re.findall(r'(\d+)', i)) for i in content]
-        arrangement: list[tuple[int, ...]] = [i * 5 for i in arrangement]
-        return tuple(zip(springs, arrangement))
-
-    def get_arrangements(self, spring_set: SpringSet):
+    def get_arrangements(spring_set: SpringSet) -> int:
 
         def compare(candidate: str, pattern: str) -> bool:
             for i, j in zip(candidate, ('.#' if p == '?' else p for p in pattern)):
@@ -34,13 +28,13 @@ class Solution:
                     return False
             return True
 
-        queue = {spring_set[0]: 1}
+        queue: dict[str, int] = {spring_set[0]: 1}
         for idx, valves in enumerate(spring_set[1]):
-            new_queue = dict()
+            new_queue: dict[str, int] = dict()
             for q, weight in queue.items():
                 for pos in range(len(q) - valves + 1):
-                    comparison = '.' * pos + '#' * valves + ('.' * (idx < (len(spring_set[1]) - 1)))
-                    end = len(comparison)
+                    comparison: str = '.' * pos + '#' * valves + ('.' * (idx < (len(spring_set[1]) - 1)))
+                    end: int = len(comparison)
                     if end > len(q):
                         continue
                     if compare(comparison, q[:end]):
@@ -51,14 +45,11 @@ class Solution:
             queue = new_queue
         return sum(j for i, j in queue.items() if "#" not in i)
 
-    def solve_part1(self):
-        return sum(self.get_arrangements(i) for i in self.springs)
-
-    def solve_part2(self):
-        return sum(self.get_arrangements(i) for i in self.translate_map())
+    def solve(self, factor: int) -> int:
+        return sum(self.get_arrangements(i) for i in self.translate_map(factor))
 
 
 if __name__ == '__main__':
-    s = Solution("input.txt")
-    print(s.solve_part1())
-    print(s.solve_part2())
+    s = Solution("example.txt")
+    print(s.solve(factor=1))
+    print(s.solve(factor=5))
