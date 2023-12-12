@@ -50,6 +50,6 @@ class Solution:
 
 
 if __name__ == '__main__':
-    s = Solution("example.txt")
+    s = Solution("input.txt")
     print(s.solve(factor=1))
     print(s.solve(factor=5))
