@@ -12,9 +12,9 @@ class Mirror:
     symmetries: tuple[int, int]
     
     def __init__(self, input: list[list[int]]):
-        rotated: list[tuple[int, ...]] = list(zip(*input))
+        mirrored_xy: list[tuple[int, ...]] = list(zip(*input))
         self.h = tuple(sum(1 << i for i in self.get_indicies(j)) for j in input)
-        self.v = tuple(sum(1 << i for i in self.get_indicies(j)) for j in rotated)
+        self.v = tuple(sum(1 << i for i in self.get_indicies(j)) for j in mirrored_xy)
         self.symmetries = self.find_symmetry(self.h), self.find_symmetry(self.v)
         self.smudges = self.find_smudges(self.h), self.find_smudges(self.v)
     
