@@ -1,6 +1,6 @@
 from operator import add
 from pathlib import Path
-from typing import Union
+from typing import Iterable, Union
 
 
 class Mirror:
@@ -17,8 +17,8 @@ class Mirror:
         self.smudges = self.find_smudges(self.h), self.find_smudges(self.v)
     
     @staticmethod
-    def get_indicies(input: list[int]) -> list[int]:
-        return [i for i, j in enumerate(input) if j == '#']
+    def get_indicies(input: list[int]) -> Iterable[int]:
+        return (i for i, j in enumerate(input) if j == '#')
     
     @staticmethod
     def find_symmetry(values: list[int]) -> int:
