@@ -32,7 +32,7 @@ class Mirror:
     def find_smudges(values: Iterable[int]) -> int:
         
         def is_similar(a: int, b: int) -> bool:
-            xor: int = (a ^ b)
+            xor: int = a ^ b
             return xor != 0 and not (xor & (xor - 1))
         
         smudges: list[int] = [i + 1 for i, j in enumerate(zip(values, values[1:])) if is_similar(*j)]
