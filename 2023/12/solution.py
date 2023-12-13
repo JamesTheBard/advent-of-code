@@ -32,7 +32,6 @@ class Solution:
         for idx, valves in enumerate(spring_set[1]):
             new_queue: dict[str, int] = dict()
             for q, weight in queue.items():
-                first_valve: int = q.find("#") if q.find("#") else len(q)
                 for pos in range(len(q) - valves + 1):
                     comparison: str = '.' * pos + '#' * valves + ('.' * (idx < (len(spring_set[1]) - 1)))
                     end: int = len(comparison)
