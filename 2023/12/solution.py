@@ -1,7 +1,6 @@
 import re
 from pathlib import Path
 from typing import Union
-from functools import reduce
 
 SpringSet = tuple[str, tuple[int, ...]]
 
