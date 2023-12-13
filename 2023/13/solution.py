@@ -28,8 +28,14 @@ class Mirror:
                 return p
         return 0
     
-    def find_smudges(self, values: Iterable[int]) -> int:
-        smudges: list[int] = [i + 1 for i, j in enumerate(zip(values, values[1:])) if self.is_similar(*j)]
+    @staticmethod
+    def find_smudges(values: Iterable[int]) -> int:
+        
+        def is_similar(a: int, b: int) -> bool:
+            xor: int = (a ^ b)
+            return xor != 0 and not (xor & (xor - 1))
+        
+        smudges: list[int] = [i + 1 for i, j in enumerate(zip(values, values[1:])) if is_similar(*j)]
         for s in smudges:
             if all(i == j for i, j in zip(values[:s - 1][::-1], values[s + 1:])):
                 return s
@@ -38,16 +44,11 @@ class Mirror:
         for p in possibilities:
             combinations: list[tuple[int, int]] = list(zip(values[:p][::-1], values[p:]))
             matches: int = sum(i == j for i, j in combinations)
-            similar: int = sum(self.is_similar(*i) for i in combinations)
+            similar: int = sum(is_similar(*i) for i in combinations)
             if matches == len(combinations) - 1 and similar == 1:
                 return p
         return 0
     
-    @staticmethod
-    def is_similar(i: int, j: int) -> bool:
-        a: int = (i ^ j)
-        return a != 0 and not (a & (a - 1))
-
 
 class Solution:
     def __init__(self, input_file: Union[str, Path]):
