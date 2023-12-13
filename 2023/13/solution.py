@@ -35,7 +35,7 @@ class Mirror:
         
         def is_similar(a: int, b: int) -> bool:
             xor: int = a ^ b
-            return xor != 0 and not (xor & (xor - 1))
+            return xor != 0 and not xor & (xor - 1)
         
         smudges: Iterable[int] = self.get_positions(values, is_similar)
         for s in smudges:
