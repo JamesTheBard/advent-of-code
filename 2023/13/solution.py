@@ -39,8 +39,8 @@ class Mirror:
         possibilities: list[int] = [i + 1 for i, (j, k) in enumerate(zip(values, values[1:])) if j == k]
         for p in possibilities:
             combinations: list[tuple[int, int]] = list(zip(values[:p][::-1], values[p:]))
-            matches: int = len([(i, j) for i, j in combinations if i == j])
-            similar: int = len([(i, j) for i, j in combinations if self.is_similar(i, j)])
+            matches: int = sum(i == j for i, j in combinations)
+            similar: int = sum(self.is_similar(*i) for i in combinations)
             if matches == len(combinations) - 1 and similar == 1:
                 return p
         return 0
