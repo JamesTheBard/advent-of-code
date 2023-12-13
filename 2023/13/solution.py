@@ -1,6 +1,6 @@
 from operator import add, eq
 from pathlib import Path
-from typing import Iterable, Union
+from typing import Iterable, Union, Callable
 
 
 class Mirror:
@@ -21,26 +21,28 @@ class Mirror:
         return (i for i, j in enumerate(values) if j == '#')
     
     @staticmethod
-    def find_symmetry(values: Iterable[int]) -> int:
-        possibilities: list[int] = [i + 1 for i, j in enumerate(zip(values, values[1:])) if eq(*j)]
+    def get_positions(i: Iterable[int], f: Callable[[int, int], bool]) -> Iterable[int]:
+        return (i + 1 for i, j in enumerate(zip(i, i[1:])) if f(*j))
+    
+    def find_symmetry(self, values: Iterable[int]) -> int:
+        possibilities: Iterable[int] = self.get_positions(values, eq)
         for p in possibilities:
             if all(i == j for i, j in zip(values[:p][::-1], values[p:])):
                 return p
         return 0
     
-    @staticmethod
-    def find_smudges(values: Iterable[int]) -> int:
+    def find_smudges(self, values: Iterable[int]) -> int:
         
         def is_similar(a: int, b: int) -> bool:
             xor: int = a ^ b
             return xor != 0 and not (xor & (xor - 1))
         
-        smudges: list[int] = [i + 1 for i, j in enumerate(zip(values, values[1:])) if is_similar(*j)]
+        smudges: Iterable[int] = self.get_positions(values, is_similar)
         for s in smudges:
             if all(i == j for i, j in zip(values[:s - 1][::-1], values[s + 1:])):
                 return s
         
-        possibilities: list[int] = [i + 1 for i, j in enumerate(zip(values, values[1:])) if eq(*j)]
+        possibilities: Iterable[int] = self.get_positions(values, eq)
         for p in possibilities:
             combinations: list[tuple[int, int]] = list(zip(values[:p][::-1], values[p:]))
             matches: int = sum(i == j for i, j in combinations)
