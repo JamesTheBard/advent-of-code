@@ -44,7 +44,6 @@ class Solution:
                             new_queue[q[end:]] += weight
                         except KeyError:
                             new_queue[q[end:]] = weight
-
             queue = new_queue
         return sum(j for i, j in queue.items() if "#" not in i)
 
