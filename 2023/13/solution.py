@@ -1,4 +1,4 @@
-from operator import add
+from operator import add, eq
 from pathlib import Path
 from typing import Iterable, Union
 
@@ -22,19 +22,19 @@ class Mirror:
     
     @staticmethod
     def find_symmetry(values: list[int]) -> int:
-        possibilities: list[int] = [i + 1 for i, (j, k) in enumerate(zip(values, values[1:])) if j == k]
+        possibilities: list[int] = [i + 1 for i, j in enumerate(zip(values, values[1:])) if eq(*j)]
         for p in possibilities:
             if all(i == j for i, j in zip(values[:p][::-1], values[p:])):
                 return p
         return 0
     
     def find_smudges(self, values: list[int]) -> int:
-        smudges: list[int] = [i + 1 for i, (j, k) in enumerate(zip(values, values[1:])) if self.is_similar(j, k)]
+        smudges: list[int] = [i + 1 for i, j in enumerate(zip(values, values[1:])) if self.is_similar(*j)]
         for s in smudges:
             if all(i == j for i, j in zip(values[:s - 1][::-1], values[s + 1:])):
                 return s
         
-        possibilities: list[int] = [i + 1 for i, (j, k) in enumerate(zip(values, values[1:])) if j == k]
+        possibilities: list[int] = [i + 1 for i, j in enumerate(zip(values, values[1:])) if eq(*j)]
         for p in possibilities:
             combinations: list[tuple[int, int]] = list(zip(values[:p][::-1], values[p:]))
             matches: int = sum(i == j for i, j in combinations)
