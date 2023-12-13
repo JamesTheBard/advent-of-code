@@ -53,7 +53,7 @@ class Solution:
     def __init__(self, input_file: Union[str, Path]):
         self.input_file = Path(input_file)
         self.mirrors = self.process_mirrors()
-        
+
     def process_mirrors(self) -> list[Mirror]:
         content: list[str] = [i.strip() for i in self.input_file.open('r').readlines()]
         mirror_data: list[tuple[int, ...]] = list()
@@ -66,7 +66,7 @@ class Solution:
                 mirror_data.append(tuple(i for i in line))
         results.append(Mirror(mirror_data))
         return results
-    
+
     def solve_part1(self) -> int:
         return sum(add(100 * i.symmetries[0], i.symmetries[1]) for i in self.mirrors)
     
