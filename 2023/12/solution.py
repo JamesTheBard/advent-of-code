@@ -1,6 +1,7 @@
 import re
 from pathlib import Path
 from typing import Union
+from functools import reduce
 
 SpringSet = tuple[str, tuple[int, ...]]
 
@@ -32,16 +33,18 @@ class Solution:
         for idx, valves in enumerate(spring_set[1]):
             new_queue: dict[str, int] = dict()
             for q, weight in queue.items():
+                first_valve: int = q.find("#") if q.find("#") else len(q)
                 for pos in range(len(q) - valves + 1):
                     comparison: str = '.' * pos + '#' * valves + ('.' * (idx < (len(spring_set[1]) - 1)))
                     end: int = len(comparison)
-                    if end > len(q):
+                    if end > len(q) or '#' in q[:pos]:
                         break
                     if compare(comparison, q[:end]):
                         try:
                             new_queue[q[end:]] += weight
                         except KeyError:
                             new_queue[q[end:]] = weight
+
             queue = new_queue
         return sum(j for i, j in queue.items() if "#" not in i)
 
