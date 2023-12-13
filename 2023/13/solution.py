@@ -1,6 +1,6 @@
 from operator import add, eq
 from pathlib import Path
-from typing import Iterable, Union, Callable
+from typing import Callable, Iterable, Union
 
 
 class Mirror:
