@@ -32,15 +32,16 @@ class Mirror:
     
     def find_smudges(self, values: list[int]) -> int:
         smudges: list[int] = [i + 1 for i, (j, k) in enumerate(zip(values, values[1:])) if self.is_similar(j, k)]
-        possibilities: list[int] = [i + 1 for i, (j, k) in enumerate(zip(values, values[1:])) if j == k]
         for s in smudges:
             if all(i == j for i, j in zip(values[:s - 1][::-1], values[s + 1:])):
                 return s
+        
+        possibilities: list[int] = [i + 1 for i, (j, k) in enumerate(zip(values, values[1:])) if j == k]
         for p in possibilities:
             combinations: list[tuple[int, int]] = list(zip(values[:p][::-1], values[p:]))
-            matches: list[tuple[int, int]] = [(i, j) for i, j in combinations if i == j]
-            similar: list[tuple[int, int]] = [(i, j) for i, j in combinations if self.is_similar(i, j)]
-            if len(matches) == len(combinations) - 1 and len(similar) == 1:
+            matches: int = len([(i, j) for i, j in combinations if i == j])
+            similar: int = len([(i, j) for i, j in combinations if self.is_similar(i, j)])
+            if matches == len(combinations) - 1 and similar == 1:
                 return p
         return 0
     
