@@ -24,7 +24,7 @@ class Mirror:
     
     @staticmethod
     def find_symmetry(values: list[int]) -> int:
-        possibilities: list[int] = [i + 1 for i, (j, k) in enumerate(zip(values, values[1:])) if k == j]
+        possibilities: list[int] = [i + 1 for i, (j, k) in enumerate(zip(values, values[1:])) if j == k]
         for p in possibilities:
             if all(i == j for i, j in zip(values[:p][::-1], values[p:])):
                 return p
@@ -32,7 +32,7 @@ class Mirror:
     
     def find_smudges(self, values: list[int]) -> int:
         smudges: list[int] = [i + 1 for i, (j, k) in enumerate(zip(values, values[1:])) if self.is_similar(j, k)]
-        possibilities: list[int] = [i + 1 for i, (j, k) in enumerate(zip(values, values[1:])) if k == j]
+        possibilities: list[int] = [i + 1 for i, (j, k) in enumerate(zip(values, values[1:])) if j == k]
         for s in smudges:
             if all(i == j for i, j in zip(values[:s - 1][::-1], values[s + 1:])):
                 return s
