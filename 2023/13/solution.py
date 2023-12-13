@@ -9,26 +9,26 @@ class Mirror:
     smudges: tuple[int, int]
     symmetries: tuple[int, int]
     
-    def __init__(self, input: list[list[int]]):
-        mirrored_xy: list[tuple[int, ...]] = list(zip(*input))
-        self.h = tuple(sum(1 << i for i in self.get_indicies(j)) for j in input)
-        self.v = tuple(sum(1 << i for i in self.get_indicies(j)) for j in mirrored_xy)
+    def __init__(self, matrix: list[tuple[str, ...]]):
+        mirrored_xy: list[tuple[str, ...]] = list(zip(*matrix))
+        self.h = tuple(sum(1 << i for i in self.get_indices(j)) for j in matrix)
+        self.v = tuple(sum(1 << i for i in self.get_indices(j)) for j in mirrored_xy)
         self.symmetries = self.find_symmetry(self.h), self.find_symmetry(self.v)
         self.smudges = self.find_smudges(self.h), self.find_smudges(self.v)
     
     @staticmethod
-    def get_indicies(input: list[int]) -> Iterable[int]:
-        return (i for i, j in enumerate(input) if j == '#')
+    def get_indices(values: tuple[str, ...]) -> Iterable[int]:
+        return (i for i, j in enumerate(values) if j == '#')
     
     @staticmethod
-    def find_symmetry(values: list[int]) -> int:
+    def find_symmetry(values: tuple[int, ...]) -> int:
         possibilities: list[int] = [i + 1 for i, j in enumerate(zip(values, values[1:])) if eq(*j)]
         for p in possibilities:
             if all(i == j for i, j in zip(values[:p][::-1], values[p:])):
                 return p
         return 0
     
-    def find_smudges(self, values: list[int]) -> int:
+    def find_smudges(self, values: tuple[int, ...]) -> int:
         smudges: list[int] = [i + 1 for i, j in enumerate(zip(values, values[1:])) if self.is_similar(*j)]
         for s in smudges:
             if all(i == j for i, j in zip(values[:s - 1][::-1], values[s + 1:])):
@@ -56,7 +56,7 @@ class Solution:
 
     def process_mirrors(self) -> list[Mirror]:
         content: list[str] = [i.strip() for i in self.input_file.open('r').readlines()]
-        mirror_data: list[tuple[int, ...]] = list()
+        mirror_data: list[tuple[str, ...]] = list()
         results: list[Mirror] = list()
         for line in content:
             if not line and mirror_data:
