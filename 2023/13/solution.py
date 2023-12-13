@@ -1,10 +1,8 @@
-from dataclasses import dataclass
 from operator import add
 from pathlib import Path
 from typing import Union
 
 
-@dataclass
 class Mirror:
     h: tuple[int, ...]
     v: tuple[int, ...]
