@@ -51,6 +51,9 @@ class Mirror:
     
 
 class Solution:
+    input_file: Path
+    mirrors: list[Mirror]
+    
     def __init__(self, input_file: Union[str, Path]):
         self.input_file = Path(input_file)
         self.mirrors = self.process_mirrors()
