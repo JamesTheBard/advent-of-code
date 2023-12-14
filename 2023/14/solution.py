@@ -5,7 +5,7 @@ from typing import Iterable, Union
 
 
 def rotate_matrix(matrix: Iterable[Iterable[str]], rotations: int) -> tuple[tuple[str, ...], ...]:
-    rotations = rotations % 4
+    rotations %= 4
     match rotations:
         case 1:
             return tuple(zip(*matrix))[::-1]
