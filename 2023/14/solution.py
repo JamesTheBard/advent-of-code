@@ -43,7 +43,7 @@ class Platform:
 
     @staticmethod
     def total_load(matrix: Iterable[Iterable[str]]) -> int:
-        return sum(sum(1 * (idx + 1) for j in i if j == 'O') for idx, i in enumerate(matrix[::-1]))
+        return sum(sum(idx + 1 for j in i if j == 'O') for idx, i in enumerate(matrix[::-1]))
 
     @staticmethod
     def get_cube_rocks(values: Iterable[str]) -> tuple[int, ...]:
