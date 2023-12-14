@@ -1,10 +1,11 @@
 from enum import Enum
-from itertools import cycle
 from pathlib import Path
 from typing import Iterable, Union
 
+Matrix = Iterable[Iterable[str]]
 
-def rotate_matrix(matrix: Iterable[Iterable[str]], rotations: int) -> tuple[tuple[str, ...], ...]:
+
+def rotate_matrix(matrix: Matrix, rotations: int) -> Matrix:
     rotations %= 4
     match rotations:
         case 1:
@@ -26,22 +27,28 @@ class Directions(Enum):
 class Platform:
     matrix: Iterable[Iterable[str]]
 
-    def __init__(self, matrix: Iterable[Iterable[str]]):
+    def __init__(self, matrix: Matrix):
         self.matrix = matrix
 
-    def push_rocks(self, matrix: Iterable[Iterable[str]], direction: int) -> Iterable[Iterable[str]]:
+    def push_rocks(self, matrix: Matrix, direction: int) -> Matrix:
         matrix: Iterable[Iterable[str]] = rotate_matrix(matrix, direction)
         results: list[list[str]] = list()
         for row in matrix:
-            possibilities: tuple[int, ...] = tuple(sorted({0, *self.get_cube_rocks(row), len(row)}))
+            possibilities: tuple[int, ...] = tuple(sorted({0, *self.get_cube_rocks(row), len(tuple(row))}))
             sorted_row: list[str] = list()
             for start, end in zip(possibilities, possibilities[1:]):
                 sorted_row.extend(sorted(row[start:end]))
             results.append(sorted_row)
         return rotate_matrix(results, -direction)
 
+    def run_cycle(self, matrix: Matrix) -> Matrix:
+        directions = [Directions.NORTH, Directions.WEST, Directions.SOUTH, Directions.EAST]
+        for d in directions:
+            matrix = self.push_rocks(matrix, d.value)
+        return matrix
+
     @staticmethod
-    def total_load(matrix: Iterable[Iterable[str]]) -> int:
+    def total_load(matrix: Matrix) -> int:
         return sum(sum(idx + 1 for j in i if j == 'O') for idx, i in enumerate(matrix[::-1]))
 
     @staticmethod
@@ -57,7 +64,7 @@ class Solution:
         self.input_file = Path(input_file)
         self.platform = Platform(self.process_platform())
 
-    def process_platform(self) -> tuple[tuple[str, ...], ...]:
+    def process_platform(self) -> Matrix:
         content = [i.strip() for i in self.input_file.open('r').readlines()]
         return tuple(tuple(j for j in i) for i in content)
 
@@ -66,19 +73,16 @@ class Solution:
         return self.platform.total_load(matrix)
 
     def solve_part2(self, cycles: int) -> int:
-        directions = [Directions.NORTH, Directions.WEST, Directions.SOUTH, Directions.EAST]
-        matrix: Iterable[Iterable[str]] = self.platform.matrix
-        history, offset = list(), 0
-        history.append(s.platform.matrix)
-        for idx, d in enumerate(cycle(directions)):
-            if idx + offset >= cycles:
+        matrix: Matrix = self.platform.matrix
+        history: list[Matrix] = list()
+        for idx in range(cycles):
+            matrix = self.platform.run_cycle(matrix)
+            if matrix in history:
                 break
-            matrix = self.platform.push_rocks(matrix, d.value)
-            if d == Directions.NORTH:
-                if history.count(matrix) == 1 and offset == 0:
-                    length: int = idx - (history[::-1].index(matrix) * 4)
-                    offset: int = (((cycles - idx) // length) - 2) * length
-                history.append(matrix)
+            history.append(matrix)
+        if idx < cycles - 1:
+            length: int = idx - history.index(matrix)
+            matrix: Matrix = history[(cycles - idx) % length + history.index(matrix) - 1]
         return self.platform.total_load(matrix)
 
 
