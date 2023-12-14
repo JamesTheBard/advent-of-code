@@ -31,7 +31,7 @@ class Platform:
         self.matrix = matrix
 
     def push_rocks(self, matrix: Matrix, direction: int) -> Matrix:
-        matrix: Iterable[Iterable[str]] = rotate_matrix(matrix, direction)
+        matrix: Matrix = rotate_matrix(matrix, direction)
         results: list[list[str]] = list()
         for row in matrix:
             possibilities: tuple[int, ...] = tuple(sorted({0, *self.get_cube_rocks(row), len(tuple(row))}))
