@@ -1,4 +1,3 @@
-from collections import deque
 from enum import Enum
 from itertools import cycle
 from pathlib import Path
@@ -69,21 +68,21 @@ class Solution:
     def solve_part2(self, cycles: int) -> int:
         directions = [Directions.NORTH, Directions.WEST, Directions.SOUTH, Directions.EAST]
         matrix: Iterable[Iterable[str]] = self.platform.matrix
-        history, offset = deque(), 0
-        history.appendleft(s.platform.matrix)
+        history, offset = list(), 0
+        history.append(s.platform.matrix)
         for idx, d in enumerate(cycle(directions)):
             if idx + offset >= cycles:
                 break
             matrix = self.platform.push_rocks(matrix, d.value)
             if d == Directions.NORTH:
                 if history.count(matrix) == 1 and offset == 0:
-                    length: int = idx - (history.index(matrix) * 4)
+                    length: int = idx - (history[::-1].index(matrix) * 4)
                     offset: int = (((cycles - idx) // length) - 2) * length
-                history.appendleft(matrix)
+                history.append(matrix)
         return self.platform.total_load(matrix)
 
 
 if __name__ == "__main__":
-    s = Solution("example.txt")
+    s = Solution("input.txt")
     print(s.solve_part1())
     print(s.solve_part2(cycles=1_000_000_000))
