@@ -42,9 +42,9 @@ class Platform:
         return rotate_matrix(results, -direction)
 
     def run_cycle(self, matrix: Matrix) -> Matrix:
-        directions = [Directions.NORTH, Directions.WEST, Directions.SOUTH, Directions.EAST]
+        directions: list[Enum] = [Directions.NORTH, Directions.WEST, Directions.SOUTH, Directions.EAST]
         for d in directions:
-            matrix = self.push_rocks(matrix, d.value)
+            matrix: Matrix = self.push_rocks(matrix, d.value)
         return matrix
 
     @staticmethod
@@ -69,7 +69,7 @@ class Solution:
         return tuple(tuple(j for j in i) for i in content)
 
     def solve_part1(self) -> int:
-        matrix = self.platform.push_rocks(self.platform.matrix, Directions.NORTH.value)
+        matrix: Matrix = self.platform.push_rocks(self.platform.matrix, Directions.NORTH.value)
         return self.platform.total_load(matrix)
 
     def solve_part2(self, cycles: int) -> int:
