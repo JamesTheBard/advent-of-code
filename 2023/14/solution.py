@@ -25,7 +25,7 @@ class Directions(Enum):
 
 
 class Platform:
-    matrix: Iterable[Iterable[str]]
+    matrix: Matrix
 
     def __init__(self, matrix: Matrix):
         self.matrix = matrix
@@ -49,7 +49,7 @@ class Platform:
 
     @staticmethod
     def total_load(matrix: Matrix) -> int:
-        return sum(sum(idx + 1 for j in i if j == 'O') for idx, i in enumerate(matrix[::-1]))
+        return sum(tuple(i).count('O') * (idx + 1) for idx, i in enumerate(matrix[::-1]))
 
     @staticmethod
     def get_cube_rocks(values: Iterable[str]) -> tuple[int, ...]:
