@@ -8,11 +8,11 @@ def rotate_matrix(matrix: Iterable[Iterable[str]], rotations: int) -> tuple[tupl
     rotations = rotations % 4
     match rotations:
         case 1:
-            matrix = tuple(zip(*matrix))[::-1]
+            return tuple(zip(*matrix))[::-1]
         case 2:
-            matrix = tuple(tuple(i[::-1]) for i in matrix[::-1])
+            return tuple(tuple(i[::-1]) for i in matrix[::-1])
         case 3:
-            matrix = tuple(zip(*matrix[::-1]))
+            return tuple(zip(*matrix[::-1]))
     return matrix
 
 
