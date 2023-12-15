@@ -33,7 +33,7 @@ class Lens:
         return self.label == other.label
 
     def __repr__(self) -> str:
-        return (f'Lens(label="{self.label}", box={self.box}, operator="{self.operator}, "'
+        return (f'Lens(label="{self.label}", box={self.box}, operator="{self.operator}", '
                 f'focal_length={self.focal_length}, hash={self.hash})')
 
 
