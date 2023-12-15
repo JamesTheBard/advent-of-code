@@ -69,8 +69,7 @@ class Solution:
     def solve_part2(self) -> int:
         boxes, total = self.run_hashmap(), 0
         for box in boxes:
-            for slot, lens in enumerate(box):
-                total += (lens.box + 1) * (slot + 1) * lens.focal_length
+            total += sum((lens.box + 1) * (slot + 1) * lens.focal_length for slot, lens in enumerate(box))
         return total
 
 
