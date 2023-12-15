@@ -65,7 +65,8 @@ class Solution:
         return sum(i.hash for i in self.lenses)
 
     def solve_part2(self) -> int:
-        boxes, total = self.run_hashmap(), 0
+        boxes: tuple[list[Lens], ...] = self.run_hashmap()
+        total: int = 0
         for box in boxes:
             total += sum((lens.box + 1) * (slot + 1) * lens.focal_length for slot, lens in enumerate(box))
         return total
