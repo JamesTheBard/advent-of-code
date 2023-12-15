@@ -55,7 +55,7 @@ class Solution:
         last_moves: tuple = tuple(coord)
         while True:
             n_coord = tuple(coord + i for i in move_directory[symbol] if coord + i not in last_moves)
-            n_coord = tuple(i for i in n_coord if i in keys)[0]
+            n_coord = next(i for i in n_coord if i in keys)
             if n_coord == self.start:
                 break
             last_moves = (last_moves[-1], n_coord)
