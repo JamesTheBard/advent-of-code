@@ -23,7 +23,7 @@ class Solution:
     def extrapolate(reading: Reading) -> Reading:
         left_values, right_values = [reading[0]], [reading[-1]]
         results: Reading = reading
-        while len(set(results)) != 1:
+        while len(set(results)) > 1:
             results: tuple[int, ...] = tuple(j - i for i, j in zip(results, results[1:]))
             left_values.append(results[0])
             right_values.append(results[-1])
@@ -39,6 +39,6 @@ class Solution:
 
 
 if __name__ == '__main__':
-    s = Solution("input.txt")
+    s = Solution("example.txt")
     print(s.solve_part1())
     print(s.solve_part2())
