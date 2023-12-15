@@ -24,10 +24,7 @@ class Lens:
     @staticmethod
     def _get_lens_info(str_input: str) -> tuple[str, str, int | None]:
         values: tuple[str, ...] = re.search(r'(.+)([=-])(\d*)', str_input).groups()
-        try:
-            return values[0], values[1], int(values[2])
-        except ValueError:
-            return values[0], values[1], None
+        return values[0], values[1], None if values[2] == '' else int(values[2])
 
     def __eq__(self, other: "Lens") -> bool:
         return self.label == other.label
