@@ -1,8 +1,5 @@
 import re
-from collections import namedtuple
 from pathlib import Path
-
-Operator = namedtuple('Operator', ['sign', 'focal_length'])
 
 
 class Lens:
