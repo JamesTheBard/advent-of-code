@@ -21,8 +21,8 @@ class Mirror:
         return (i for i, j in enumerate(values) if j == '#')
     
     @staticmethod
-    def get_positions(i: Iterable[int], f: Callable[[int, int], bool]) -> Iterable[int]:
-        return (i + 1 for i, j in enumerate(zip(i, i[1:])) if f(*j))
+    def get_positions(values: Iterable[int], f: Callable[[int, int], bool]) -> Iterable[int]:
+        return (i + 1 for i, j in enumerate(zip(values, values[1:])) if f(*j))
     
     def find_symmetry(self, values: Iterable[int]) -> int:
         possibilities: Iterable[int] = self.get_positions(values, eq)

@@ -20,8 +20,8 @@ class Solution:
         nodes: dict[str, tuple[str, str]] = dict()
         directions: str = self.content[0].strip()
         for line in self.content[2:]:
-            if m := re.search(r'(\w{3}).+(\w{3}).+(\w{3})', line):
-                nodes[m.group(1)] = (m.group(2), m.group(3))
+            if m := re.findall(r'(\w{3})', line):
+                nodes[m[0]] = m[1], m[2]
         return directions, nodes
 
     def navigate(self, start: str, end: str) -> int:
