@@ -49,15 +49,16 @@ class Solution:
     def run_hashmap(self) -> tuple[list[Lens], ...]:
         boxes: tuple[list[Lens], ...] = tuple(list() for _ in range(256))
         for lens in self.lenses:
-            if lens.operator == '=':
-                if lens not in boxes[lens.box]:
-                    boxes[lens.box].append(lens)
-                else:
-                    old_lens = boxes[lens.box].index(lens)
-                    boxes[lens.box][old_lens] = lens
-                continue
-            if lens in boxes[lens.box]:
-                boxes[lens.box].remove(lens)
+            match lens.operator:
+                case '=':
+                    if lens not in boxes[lens.box]:
+                        boxes[lens.box].append(lens)
+                    else:
+                        old_lens = boxes[lens.box].index(lens)
+                        boxes[lens.box][old_lens] = lens
+                case '-':
+                    if lens in boxes[lens.box]:
+                        boxes[lens.box].remove(lens)
         return boxes
 
     def solve_part1(self) -> int:
