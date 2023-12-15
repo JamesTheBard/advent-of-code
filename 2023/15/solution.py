@@ -28,7 +28,7 @@ class Lens:
         except ValueError:
             return values[0], values[1], None
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: "Lens") -> bool:
         return self.label == other.label
 
     def __repr__(self) -> str:
