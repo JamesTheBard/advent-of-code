@@ -11,7 +11,7 @@ class Lens:
 
     def __init__(self, str_input: str):
         self.hash = self._hash_input(str_input)
-        self.label, self.operator, self.focal_length = self._get_operator(str_input)
+        self.label, self.operator, self.focal_length = self._get_lens_info(str_input)
         self.box = self._hash_input(self.label)
 
     @staticmethod
@@ -22,7 +22,7 @@ class Lens:
         return current
 
     @staticmethod
-    def _get_operator(str_input: str) -> tuple[str, str, int | None]:
+    def _get_lens_info(str_input: str) -> tuple[str, str, int | None]:
         values: tuple[str, ...] = re.search(r'(.+)([=-])(\d*)', str_input).groups()
         try:
             return values[0], values[1], int(values[2])
