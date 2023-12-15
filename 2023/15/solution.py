@@ -45,7 +45,7 @@ class Solution:
         self.input_file = Path(input_file)
         self.lenses = self.parse_inputs()
 
-    def parse_inputs(self) -> tuple:
+    def parse_inputs(self) -> tuple[Lens, ...]:
         line: str = self.input_file.open('r').readline().strip()
         return tuple(Lens(j) for j in line.split(','))
 
