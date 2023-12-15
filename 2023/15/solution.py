@@ -5,6 +5,7 @@ from pathlib import Path
 class Lens:
     box: int
     focal_length: int
+    hash: int
     label: str
     operator: str
 
