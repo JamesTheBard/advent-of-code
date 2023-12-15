@@ -1,9 +1,9 @@
 import re
-from itertools import product, batched
+from itertools import batched, product
+from math import ceil
 from operator import add, sub
 from pathlib import Path
 from typing import NamedTuple, Union
-from math import ceil
 
 
 class Coordinate(NamedTuple):
@@ -67,7 +67,7 @@ class Solution:
         return results
 
     def generate_map(self, path_map: dict[Coordinate, str]) -> list[str]:
-        new_map: list[list[str]] = [["." for i in range(self.max_x + 1)] for j in range(self.max_y + 1)]
+        new_map: list[list[str]] = [["." for _ in range(self.max_x + 1)] for _ in range(self.max_y + 1)]
         for coord, symbol in path_map.items():
             new_map[coord.y][coord.x] = symbol
         return [''.join(i) for i in new_map]
