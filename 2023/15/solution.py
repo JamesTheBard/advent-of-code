@@ -48,11 +48,9 @@ class Solution:
         line: str = self.input_file.open('r').readline().strip()
         return tuple(Lens(j) for j in line.split(','))
 
-    def run_hashmap(self) -> dict[int, list[Lens]]:
-        boxes: dict[int, list[Lens]] = dict()
+    def run_hashmap(self) -> tuple[list[Lens], ...]:
+        boxes: tuple[list[Lens], ...] = tuple(list() for _ in range(256))
         for lens in self.lenses:
-            if lens.box not in boxes.keys():
-                boxes[lens.box] = list()
             if lens.operator == '=':
                 if lens not in boxes[lens.box]:
                     boxes[lens.box].append(lens)
@@ -69,7 +67,7 @@ class Solution:
 
     def solve_part2(self) -> int:
         boxes, total = self.run_hashmap(), 0
-        for box in boxes.values():
+        for box in boxes:
             for slot, lens in enumerate(box):
                 total += (lens.box + 1) * (slot + 1) * lens.focal_length
         return total
