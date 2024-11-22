@@ -16,9 +16,9 @@ class Solution:
 
     def increment_state(self, state: dict[int, int]) -> dict[int, int]:
         state = {k - 1: v for k, v in state.items()}
-        state[8] = state.get(8, 0) + state.get(-1, 0)
-        state[6] = state.get(6, 0) + state.get(-1, 0)
-        state.pop(-1, None)
+        new_fish = state.pop(-1, 0)
+        state[8] = state.get(8, 0) + new_fish
+        state[6] = state.get(6, 0) + new_fish
         return state
 
     def solve_part1(self) -> int:
