@@ -3,6 +3,9 @@ from pathlib import Path
 
 class Solution:
 
+    input_file: Path
+    positions: list[int]
+
     def __init__(self, input_file: str | Path):
         self.input_file = Path(input_file)
         self.positions = self.process_input()
@@ -10,7 +13,7 @@ class Solution:
     def process_input(self) -> list[int]:
         return [int(i) for i in self.input_file.open('r').readline().split(",")]
 
-    def solve_part1(self):
+    def solve_part1(self) -> int:
         max_pos = max(self.positions)
         min_pos = min(self.positions)
         minimum_fuel = -1
@@ -22,7 +25,7 @@ class Solution:
                 return minimum_fuel
             minimum_fuel = fuel
 
-    def solve_part2(self):
+    def solve_part2(self) -> int:
         max_pos = max(self.positions)
         min_pos = min(self.positions)
         minimum_fuel = -1
