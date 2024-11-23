@@ -17,7 +17,7 @@ class Solution:
     def increment_state(self, state: dict[int, int]) -> dict[int, int]:
         state = {k - 1: v for k, v in state.items()}
         new_fish = state.pop(-1, 0)
-        state[8] = state.get(8, 0) + new_fish
+        state[8] = new_fish
         state[6] = state.get(6, 0) + new_fish
         return state
 
