@@ -63,7 +63,7 @@ class Solution:
     def solve_part1(self) -> int:
         total = 0
         for _, output in self.data:
-            total += sum(1 for i in output if len(i) not in [5, 6])
+            total += len([i for i in output if len(i) not in [5, 6]])
         return total
 
     def solve_part2(self) -> int:
