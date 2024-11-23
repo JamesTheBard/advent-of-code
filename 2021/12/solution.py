@@ -12,7 +12,7 @@ class Solution:
         self.data = self.process_input()
         self.small_caves = set(i for i, _ in self.data if i == i.lower() and len(i) < 3)
 
-    def process_input(self):
+    def process_input(self) -> list[tuple[str, str]]:
         data = [tuple(i.strip().split('-')) for i in self.input_file.open('r').readlines()]
         other_paths = list()
         for i in range(len(data)):
