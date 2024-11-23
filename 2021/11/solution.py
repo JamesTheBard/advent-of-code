@@ -28,7 +28,7 @@ class Solution:
         x_pos = (x - 1, x, x + 1)
         y_pos = (y - 1, y, y + 1)
         poss = product(x_pos, y_pos, repeat=1)
-        poss = filter(lambda i: 
+        poss = filter(lambda i:
                       i[0] >= 0 and i[0] < self.width and
                       i[1] >= 0 and i[1] < self.height and
                       not i == (x, y), poss)
