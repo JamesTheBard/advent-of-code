@@ -35,10 +35,10 @@ class Solution:
                 connected_rooms = [i[1] for i in self.data if i[0] == path[-1] and i[1] != "start"]
                 for i in connected_rooms:
                     new_path = path + [i]
-                    if not self.valid_path(new_path, twice=twice):
-                        continue
                     if new_path[0] == "start" and new_path[-1] == "end":
                         final_routes.append(new_path)
+                        continue
+                    if not self.valid_path(new_path, twice=twice):
                         continue
                     new_paths.append(new_path)
             paths = new_paths
