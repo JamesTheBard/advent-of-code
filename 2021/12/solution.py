@@ -23,7 +23,7 @@ class Solution:
         return data + other_paths
 
     def valid_path(self, path, twice: bool = False) -> bool:
-        current_values = sorted([path.count(i) for i in self.small_caves], reverse=True)
+        current_values = sorted((path.count(i) for i in self.small_caves), reverse=True)
         if twice:
             max_values = (2, 1, 1)
             return all(i <= j for i, j in zip(current_values, max_values))
@@ -36,7 +36,7 @@ class Solution:
         while paths:
             new_paths = list()
             for path in paths:
-                connected_rooms = [i[1] for i in self.data if i[0] == path[-1] and i[1] != "start"]
+                connected_rooms = (i[1] for i in self.data if i[0] == path[-1] and i[1] != "start")
                 for i in connected_rooms:
                     new_path = path + [i]
                     if i == "end":
