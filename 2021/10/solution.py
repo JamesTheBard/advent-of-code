@@ -25,7 +25,7 @@ class Solution:
             if current_token in "[(<{":
                 open_tokens = close_bracket[current_token] + open_tokens
                 continue
-            if current_token in "])>}" and open_tokens[0] == current_token:
+            if open_tokens[0] == current_token:
                 open_tokens = open_tokens[1:]
             else:
                 return current_token, open_tokens
