@@ -1,4 +1,6 @@
-Using a list to capture each individual lantern fish and just making that list bigger:
+Using a list to capture each individual lantern fish and just making that list bigger
+isn't great.  It's already taking ~110 msec and we're only iterating across the initial
+state 80 times.  This is only for part 1 of the problem.
 
 ```
  Performance counter stats for 'python solution.py':
@@ -21,7 +23,8 @@ Using a list to capture each individual lantern fish and just making that list b
 ```
 
 Converting the list into a dict where the key is point in time of the fish's lifecycle
-and the value is the number of fish at that particular point:
+and the value is the number of fish at that particular point significantly reduces
+memory and CPU utilization.  Again, this is only part 1.
 
 ```
  Performance counter stats for 'python solution.py':
@@ -43,7 +46,9 @@ and the value is the number of fish at that particular point:
        0.003704000 seconds sys
 ```
 
-Running the updated version for part 2:
+Running the updated version for part 2.  I'm pretty sure using the list/array for
+this part isn't feasable, but it's still faster than using an array and just calculating
+the solution for part 1.
 
 ```
  Performance counter stats for 'python solution.py':
