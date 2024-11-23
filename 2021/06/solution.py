@@ -12,7 +12,7 @@ class Solution:
         self.initial_state = dict(Counter(self.process_input()))
 
     def process_input(self) -> list[int]:
-        return [int(i) for i in self.input_file.open('r').readline().strip().split(",")]
+        return [int(i) for i in self.input_file.open('r').readline().split(",")]
 
     def increment_state(self, state: dict[int, int]) -> dict[int, int]:
         state = {k - 1: v for k, v in state.items()}
