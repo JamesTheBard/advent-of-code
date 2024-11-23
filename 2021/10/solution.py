@@ -20,8 +20,7 @@ class Solution:
 
     def parse_line(self, line) -> tuple[str | None, str]:
         open_tokens = str()
-        for i in range(len(line)):
-            current_token = line[i]
+        for current_token in line:
             if current_token in "[(<{":
                 open_tokens = close_bracket[current_token] + open_tokens
                 continue
