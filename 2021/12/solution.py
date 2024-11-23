@@ -3,10 +3,14 @@ from pathlib import Path
 
 class Solution:
 
+    data: list[tuple[str, str]]
+    input_path: Path
+    small_caves: set[str]
+
     def __init__(self, input_file: str | Path):
         self.input_file = Path(input_file)
         self.data = self.process_input()
-        self.small_caves = set(i[0] for i in self.data if i[0] == i[0].lower() and len(i[0]) < 3)
+        self.small_caves = set(i for i, _ in self.data if i == i.lower() and len(i) < 3)
 
     def process_input(self):
         data = [tuple(i.strip().split('-')) for i in self.input_file.open('r').readlines()]
@@ -17,7 +21,7 @@ class Solution:
             else:
                 other_paths.append((data[i][1], data[i][0]))
         return data + other_paths
-    
+
     def valid_path(self, path, twice: bool = False) -> bool:
         current_values = sorted([path.count(i) for i in self.small_caves], reverse=True)
         if twice:
@@ -25,10 +29,10 @@ class Solution:
             return all(i <= j for i, j in zip(current_values, max_values))
         return max(current_values) <= 1
 
-    def find_paths(self, twice: bool = False) -> set[str]:
+    def find_paths(self, twice: bool = False) -> int:
         paths = [["start"]]
         final_routes = list()
-        
+
         while paths:
             new_paths = list()
             for path in paths:
@@ -42,14 +46,14 @@ class Solution:
                         continue
                     new_paths.append(new_path)
             paths = new_paths
-        return set(','.join(i) for i in final_routes)
-    
+        return len(final_routes)
+
     def solve_part1(self) -> int:
-        return len(s.find_paths())
-    
+        return s.find_paths()
+
     def solve_part2(self) -> int:
-        return len(s.find_paths(twice=True))
-        
+        return s.find_paths(twice=True)
+
 
 if __name__ == "__main__":
     s = Solution("input.txt")
