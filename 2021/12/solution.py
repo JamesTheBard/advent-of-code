@@ -18,6 +18,13 @@ class Solution:
                 other_paths.append((data[i][1], data[i][0]))
         return data + other_paths
     
+    def valid_path(self, path, twice: bool = False) -> bool:
+        current_values = sorted([path.count(i) for i in self.small_caves], reverse=True)
+        if twice:
+            max_values = (2, 1, 1)
+            return all(i <= j for i, j in zip(current_values, max_values))
+        return max(current_values) <= 1
+
     def find_paths(self, twice: bool = False) -> set[str]:
         paths = [["start"]]
         final_routes = list()
@@ -25,22 +32,15 @@ class Solution:
         while paths:
             new_paths = list()
             for path in paths:
-                if path[0] == "start" and path[-1] == "end":
-                    final_routes.append(path)
-                    continue
                 connected_rooms = [i[1] for i in self.data if i[0] == path[-1] and i[1] != "start"]
                 for i in connected_rooms:
-                    if i in self.small_caves:
-                        if i in path and not twice:
-                            continue
-                        new_path = path + [i]
-                        if twice:
-                            room_score = [new_path.count(j) for j in self.small_caves]
-                            if max(room_score) > 2:
-                                continue
-                            if room_score.count(2) > 1:
-                                continue
-                    new_paths.append(path + [i])
+                    new_path = path + [i]
+                    if not self.valid_path(new_path, twice=twice):
+                        continue
+                    if new_path[0] == "start" and new_path[-1] == "end":
+                        final_routes.append(new_path)
+                        continue
+                    new_paths.append(new_path)
             paths = new_paths
         return set(','.join(i) for i in final_routes)
     
