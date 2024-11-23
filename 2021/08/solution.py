@@ -34,25 +34,23 @@ class Solution:
     def identify_numbers(self, pattern, output) -> int:
         # Find the easy digits and store their digit patterns
         numbers = dict()
+        unknown_pattern = list()
         for digit in pattern:
             match len(digit):
                 case 2: numbers[digit] = 1
                 case 3: numbers[digit] = 7
                 case 4: numbers[digit] = 4
                 case 7: numbers[digit] = 8
-                case _: pass
+                case _: unknown_pattern.append(digit)
 
         # Sort the keys because the number definitions are sorted
         # by key order: 1, 4, 7, 8
         numbers = dict(sorted(numbers.items(), key=lambda x: x[1]))
 
-        # Remove the numbers we've already defined from the pattern
-        pattern = list(set(pattern).difference(numbers.keys()))
-
         # Loop over each digit of the patterns, then look up the number
         # of shared segments with respect to 1, 4, 7, 8 then store those.
         unid_numbers = dict()
-        for digit in pattern:
+        for digit in unknown_pattern:
             digit_def = (set(digit).intersection(i) for i in numbers.keys())
             digit_def = ''.join(str(len(i)) for i in digit_def)
             unid_numbers[digit] = number_definitions[digit_def]
