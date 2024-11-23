@@ -47,11 +47,11 @@ class Solution:
         numbers = dict(sorted(numbers.items(), key=lambda x: x[1]))
 
         # Remove the numbers we've already defined from the pattern
-        unid_numbers = dict()
         pattern = list(set(pattern).difference(numbers.keys()))
 
         # Loop over each digit of the patterns, then look up the number
         # of shared segments with respect to 1, 4, 7, 8 then store those.
+        unid_numbers = dict()
         for digit in pattern:
             digit_def = (set(digit).intersection(i) for i in numbers.keys())
             digit_def = ''.join(str(len(i)) for i in digit_def)
