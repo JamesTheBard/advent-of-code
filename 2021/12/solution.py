@@ -49,10 +49,10 @@ class Solution:
         return len(final_routes)
 
     def solve_part1(self) -> int:
-        return s.find_paths()
+        return self.find_paths()
 
     def solve_part2(self) -> int:
-        return s.find_paths(twice=True)
+        return self.find_paths(twice=True)
 
 
 if __name__ == "__main__":
