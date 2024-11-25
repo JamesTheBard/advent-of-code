@@ -62,8 +62,7 @@ class Solution:
                 self.folds.append((data[0], int(data[1])))
 
     def solve_part1(self) -> int:
-        fold = self.folds[0]
-        page = Page(self.points).fold(*fold)
+        page = Page(self.points).fold(*self.folds[0])
         return len(page.points)
 
     def solve_part2(self) -> str:
