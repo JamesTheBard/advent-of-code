@@ -1,4 +1,4 @@
-So, we're not gonna talk about this solve.  I got both days done, but the code
+So, we're not gonna talk about this solve.  I got both parts done, but the code
 is bad enough to make it very slow and you have to generate the 5x5 version
 of part 1, dump that into the part 1 solve, then wait for what could only be
 called an eternity.
