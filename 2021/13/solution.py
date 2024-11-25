@@ -28,9 +28,9 @@ class Page:
 
     @property
     def text(self) -> str:
-        dim_x = max(x for x, _ in self.points)
-        dim_y = max(y for _, y in self.points)
-        text = [[" "] * (dim_x + 1) for _ in range(dim_y + 1)]
+        dim_x = max(x for x, _ in self.points) + 1
+        dim_y = max(y for _, y in self.points) + 1
+        text = [[" "] * (dim_x) for _ in range(dim_y)]
         for x, y in self.points:
             text[y][x] = "█"
         return "\n".join((''.join(i) for i in text))
