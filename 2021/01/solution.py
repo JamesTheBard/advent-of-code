@@ -1,6 +1,6 @@
 from itertools import pairwise
 from pathlib import Path
-from typing import Iterable
+from typing import Generator
 
 
 class Solution:
@@ -17,7 +17,7 @@ class Solution:
         self.data: list[int] = [int(i) for i in self.input_file.open('r').readlines()]
 
     @staticmethod
-    def get_three(data: list[int] | tuple[int]) -> Iterable[int]:
+    def get_three(data: list[int] | tuple[int]) -> Generator[int]:
         for i in range(len(data) - 2):
             yield sum(data[i:i+3])
 
