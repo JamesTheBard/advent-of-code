@@ -53,7 +53,7 @@ Going with a `map` + `lambda` solution means I can take both lists, perform what
 So, for this single line...
 
 ```python
-sum(map(lambda a, b: abs(a - b), list_a, list_b))
+return sum(map(lambda a, b: abs(a - b), list_a, list_b))
 ```
 
 ...it translates to this.
