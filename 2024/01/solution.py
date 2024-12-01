@@ -21,10 +21,9 @@ class Solution:
         return sum(map(lambda a, b: abs(a - b), list_a, list_b))
 
     def solve_part2(self) -> int:
-        numbers = set(self.list_a).intersection(self.list_b)
         list_a_count = Counter(self.list_a)
         list_b_count = Counter(self.list_b)
-        return sum(list_a_count[i] * list_b_count[i] * i for i in numbers)
+        return sum(list_a_count[i] * list_b_count[i] * i for i in list_a_count.keys())
 
 
 if __name__ == "__main__":
