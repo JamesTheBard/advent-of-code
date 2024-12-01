@@ -76,4 +76,4 @@ I went ahead and grabbed only the numbers that were shared between the two lists
 
 From there, I counted each number in both lists via the `Counter` class which makes things very, very easy.
 
-Lastly, it's time to just do the math.  The math translates to: for every unique number in both lists, multiply the number of times it shows up in the first list by the number of times it shows up in the second list.  Once you have those numbers then add them all up and that's your result.
+Lastly, it's time to just do the math.  The math translates to: for every unique number in both lists, multiply the number of times it shows up in the first list by the number of times it shows up in the second list times the number itself.  Once you have those numbers then add them all up and that's your result.
