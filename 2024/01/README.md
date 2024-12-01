@@ -1,4 +1,4 @@
-## Thoughts
+## Day 1: Historian Hysteria
 
 ### Setup
 
