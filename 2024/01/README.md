@@ -32,15 +32,17 @@ def process_input(self) -> tuple[tuple[int, ...], tuple[int, ...]]:
 
 ```python
 def process_input(self) -> tuple[tuple[int, ...], tuple[int, ...]]:
-    lines = self.input_file.open('r').readlines()
     results = list()
-    for line in lines:
-        line = line.split()
-        results.append((int(line[0]), int(line[1])))
+    with self.input_file.open('r') as lines:
+        for line in lines:
+            line = line.split()
+            results.append((int(line[0]), int(line[1])))
+    
     list_a, list_b = list(), list()
     for a, b in results:
         list_a.append(a)
         list_b.append(b)
+
     return list_a, list_b
 ```
 
