@@ -24,8 +24,8 @@ In essence this...
 
 ```python
 def process_input(self) -> tuple[tuple[int, ...], tuple[int, ...]]:
-        data = [[int(j) for j in i.split()] for i in self.input_file.open('r')]
-        return zip(*data)
+    data = [[int(j) for j in i.split()] for i in self.input_file.open('r')]
+    return zip(*data)
 ```
 
 ...is really this for the most part.
