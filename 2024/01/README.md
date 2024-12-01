@@ -59,17 +59,22 @@ sum(map(lambda a, b: abs(a - b), list_a, list_b))
 ...it translates to this.
 
 ```python
+def find_distance(a, b) -> int:
+    return abs(a - b)
+
 result = 0
 for i in range(len(list_a)):
-    result = result + abs(list_a[i] - list_b[i])
+    result = result + find_distance(list_a[i], list_b[i])
 return result
 ```
+
+More accurately
 
 ### Part 2
 
 This part is slightly more than needed.  I'm pretty sure I don't need to "cull" down the data before doing the math, but there's no reason not to add some performance stuff here.
 
-I went ahead and grabbed only the numbers that were shared between the two lists by making a set that contained list_a ∩ list_b (so, common elements between both sets).
+I went ahead and grabbed only the numbers that were shared between the two lists by making a set that contained `list_a ∩ list_b` (so, common elements between both sets).
 
 From there, I counted each number in both lists via the `Counter` class which makes things very, very easy.
 
