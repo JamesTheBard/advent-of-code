@@ -13,7 +13,7 @@ class Solution:
         self.list_a, self.list_b = self.process_input()
 
     def process_input(self) -> tuple[tuple[int, ...], tuple[int, ...]]:
-        data = [[int(j) for j in i.split()] for i in self.input_file.open('r').readlines()]
+        data = [[int(j) for j in i.split()] for i in self.input_file.open('r')]
         return zip(*data)
 
     def solve_part1(self) -> int:
