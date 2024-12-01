@@ -22,9 +22,9 @@ class Solution:
 
     def solve_part2(self) -> int:
         numbers = set(self.list_a).intersection(self.list_b)
-        list_count_a = Counter(self.list_a)
-        list_count_b = Counter(self.list_b)
-        return sum(list_count_a[i] * list_count_b[i] * i for i in numbers)
+        list_a_count = Counter(self.list_a)
+        list_b_count = Counter(self.list_b)
+        return sum(list_a_count[i] * list_b_count[i] * i for i in numbers)
 
 
 if __name__ == "__main__":
