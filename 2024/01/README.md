@@ -68,8 +68,6 @@ for i in range(len(list_a)):
 return result
 ```
 
-More accurately
-
 ### Part 2
 
 This part is slightly more than needed.  I'm pretty sure I don't need to "cull" down the data before doing the math, but there's no reason not to add some performance stuff here.
