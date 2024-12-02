@@ -57,6 +57,8 @@ and got replaced with:
 return any(self.process_report(r) for r in combinations(report, len(report) - 1))
 ```
 
+More things learned: a friend reminded me that I can simplify the comparison I'm using for the distance between numbers.  I had completely forgotten that you could use `1 <= abs(a - b) <= 3` instead of `abs(a - b) >= 1 and abs(a - b) <= 3` in Python.  I updated the code with the change and it's very good to keep in mind.
+
 I like the way it reads, but not 100% sure that really helps with readability, and the performance stayed the same.
 
 Still, pretty fun day.

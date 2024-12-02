@@ -20,7 +20,7 @@ class Solution:
         if not dampen:
             if report != sorted(report) and report != sorted(report, reverse=True):
                 return False
-            return all(abs(a - b) <= 3 and abs(a - b) >= 1 for a, b in pairwise(report))
+            return all(1 <= abs(a - b) <= 3 for a, b in pairwise(report))
 
         if self.process_report(report):
             return True
