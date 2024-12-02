@@ -25,10 +25,7 @@ class Solution:
         if self.process_report(report):
             return True
 
-        for fixed_report in combinations(report, len(report) - 1):
-            if self.process_report(fixed_report):
-                return True
-        return False
+        return any(self.process_report(r) for r in combinations(report, len(report) - 1))
 
     def solve_part1(self) -> int:
         return sum(self.process_report(report, dampen=False) for report in self.reports)

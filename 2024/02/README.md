@@ -42,4 +42,21 @@ def process_report(self, report: Iterable[int], dampen: bool = False) -> bool:
         return all(abs(a - b) <= 3 and abs(a - b) >= 1 for a, b in pairwise(report))
 ```
 
+Yet another quick change was to replace some code with another `any()` function.  This removed:
+
+```python
+for fixed_report in combinations(report, len(report) - 1):
+    if self.process_report(fixed_report):
+        return True
+    return False
+```
+
+and got replaced with:
+
+```python
+return any(self.process_report(r) for r in combinations(report, len(report) - 1))
+```
+
+I like the way it reads, but not 100% sure that really helps with readability, and the performance stayed the same.
+
 Still, pretty fun day.
