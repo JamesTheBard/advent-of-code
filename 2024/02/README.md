@@ -18,4 +18,28 @@ To remove entries from the list, it made sense to use `combinations` from `itert
 
 The `process_report` got an additional parameter that basically makes the method call itself over all of the combinations of the report input and return whether or not removing an element fixed the report.
 
+Another tweak for performance that didn't really do a ton was to return early from the ordered check.  Initially I had the `process_report` method check for if the values were ordered and if they were within the 1 to 3 number range with their neighbor before returning.  Since it doesn't matter what the gap in numbers is if they're not correctly ordered, it made sense to skip processing the report once that was determined.  Saved like 1 ms.
+
+From this:
+
+```python
+def process_report(self, report: Iterable[int], dampen: bool = False) -> bool:
+    report = list(report)
+    if not dampen:
+        ordered = report == sorted(report) or report == sorted(report, reverse=True)
+        leveled = all(abs(a - b) <= 3 and abs(a - b) >= 1 for a, b in pairwise(report))
+        return ordered and leveled
+```
+
+To this:
+
+```python
+def process_report(self, report: Iterable[int], dampen: bool = False) -> bool:
+    report = list(report)
+    if not dampen:
+        if report != sorted(report) and report != sorted(report, reverse=True):
+            return False
+        return all(abs(a - b) <= 3 and abs(a - b) >= 1 for a, b in pairwise(report))
+```
+
 Still, pretty fun day.

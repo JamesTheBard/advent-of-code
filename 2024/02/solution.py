@@ -18,9 +18,9 @@ class Solution:
     def process_report(self, report: Iterable[int], dampen: bool = False) -> bool:
         report = list(report)
         if not dampen:
-            ordered = report == sorted(report) or report == sorted(report, reverse=True)
-            leveled = all(abs(a - b) <= 3 and abs(a - b) >= 1 for a, b in pairwise(report))
-            return ordered and leveled
+            if report != sorted(report) and report != sorted(report, reverse=True):
+                return False
+            return all(abs(a - b) <= 3 and abs(a - b) >= 1 for a, b in pairwise(report))
 
         if self.process_report(report):
             return True
