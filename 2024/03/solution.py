@@ -1,23 +1,26 @@
-from pathlib import Path
 import re
+from pathlib import Path
 
 regex = re.compile(r"(?:(do|don't)\(\)|mul\((\d+),(\d+)\))")
 
 
 class Solution:
-    
+
+    data: list[str]
+    input_file: Path
+
     def __init__(self, input_file: str | Path):
         self.input_file = Path(input_file)
         self.data = self.input_file.open('r').readlines()
 
-    def solve_part1(self):
+    def solve_part1(self) -> int:
         result = 0
         for line in self.data:
             if matches := regex.findall(line):
                 result += sum(int(m[1]) * int(m[2]) for m in matches if not m[0])
         return result
-    
-    def solve_part2(self):
+
+    def solve_part2(self) -> int:
         result = 0
         matches = list()
         _ = [matches.extend(regex.findall(line)) for line in self.data]
