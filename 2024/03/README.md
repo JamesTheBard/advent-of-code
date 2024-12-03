@@ -1,0 +1,38 @@
+## Day 3: Mull It Over
+
+This one is begging for a proper parser.  Find all of the `mul(*, *)` stuff in long lines of text would be absolutely _perfect_ for a parser.
+
+And just like everyone during Christmas, it's not getting what it really wants.  That's right, we're using regular expressions.
+
+## Part 1
+
+The inital regular expression was simple enough.  Should catch all of those pesky multiply instructions.
+
+```python
+regex = re.compile(r"mul\((\d+), (\d+)\)")
+```
+
+Combine this with a `.finditer()` and everything is good to go.
+
+```python
+matches = regex.finditer(line_of_text)
+sum(int(m.group(1)) * int(m.group(2)) for m in matches)
+```
+
+## Part 2
+
+Ah, the expected twist that no one could see coming: there are other instructions at play.  This could make things more complicated and where a parser would be easy to change to make this work.
+
+Just kidding, the solution to this is more regular expressions.
+
+We'll just tweak the initial regex to be a bit more flexible.
+
+```python
+regex = re.compile(r"(?:(do|don't)\(\)|mul\((\d+),(\d+)\))")
+```
+
+We're also going to change from `.finditer()` to `.findall()` because we get a nice list of tuples.  The first element of each tuple is either `"do"`, `"don't"`, or `''`.  The empty one is the multiply instruction and means we can multiply some numbers.
+
+Next was a `match/case` statement off of that first element and everything works the first-ish time out of the gate.
+
+I think today's problem was pretty fun generally and let me break out some regular expressions.
