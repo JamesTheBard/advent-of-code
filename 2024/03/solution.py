@@ -6,7 +6,7 @@ regex = re.compile(r"(?:(do|don't)\(\)|mul\((\d+),(\d+)\))")
 
 class Solution:
 
-    data: list[str]
+    data: str
     input_file: Path
 
     def __init__(self, input_file: str | Path):
