@@ -1,6 +1,6 @@
 ## Day 3: Mull It Over
 
-This one is begging for a proper parser.  Find all of the `mul(*, *)` stuff in long lines of text would be absolutely _perfect_ for a parser.
+This one is begging for a proper parser.  Find all of the `mul(*,*)` stuff in long lines of text would be absolutely _perfect_ for a parser.
 
 And just like everyone during Christmas, it's not getting what it really wants.  That's right, we're using regular expressions.
 
@@ -9,7 +9,7 @@ And just like everyone during Christmas, it's not getting what it really wants. 
 The inital regular expression was simple enough.  Should catch all of those pesky multiply instructions.
 
 ```python
-regex = re.compile(r"mul\((\d+), (\d+)\)")
+regex = re.compile(r"mul\((\d+),(\d+)\)")
 ```
 
 Combine this with a `.finditer()` and everything is good to go.
