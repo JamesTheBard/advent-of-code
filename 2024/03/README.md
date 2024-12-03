@@ -15,9 +15,10 @@ regex = re.compile(r"mul\((\d+),(\d+)\)")
 Combine this with a `.finditer()` and everything is good to go.
 
 ```python
+result = 0
 for line in self.data:
     if matches := regex.finditer(line):
-        sum(int(m.group(1)) * int(m.group(2)) for m in matches)
+        result += sum(int(m.group(1)) * int(m.group(2)) for m in matches)
 ```
 
 ## Part 2
@@ -39,9 +40,10 @@ Next was a `match/case` statement off of that first element and everything works
 Finally, gotta backport this change to part 1 because the code no longer works.  Since `m[0]` is an empty string when it's a `mul()` operation, we need to filter all of the matches for only the ones where `m[0]` is empty.
 
 ```python
+result = 0
 for line in self.data:
     if matches := regex.findall(line):
-        sum(int(m[1]) * int(m[2]) for m in matches if not m[0])
+        result += sum(int(m[1]) * int(m[2]) for m in matches if not m[0])
 ```
 
 I think today's problem was pretty fun generally and let me break out some regular expressions.
