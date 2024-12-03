@@ -19,14 +19,14 @@ class Solution:
     def solve_part2(self) -> int:
         result = 0
         enabled = True
-        for m in regex.findall(self.data):
-            match m[0]:
+        for op, a, b in regex.findall(self.data):
+            match op:
                 case "do":
                     enabled = True
                 case "don't":
                     enabled = False
                 case _:
-                    result += int(m[1]) * int(m[2]) * enabled
+                    result += int(a) * int(b) * enabled
         return result
 
 
