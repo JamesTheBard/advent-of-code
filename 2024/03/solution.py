@@ -11,23 +11,15 @@ class Solution:
 
     def __init__(self, input_file: str | Path):
         self.input_file = Path(input_file)
-        self.data = self.input_file.open('r').readlines()
+        self.data = self.input_file.open('r').read()
 
     def solve_part1(self) -> int:
-        result = 0
-        for line in self.data:
-            if matches := regex.findall(line):
-                result += sum(int(m[1]) * int(m[2]) for m in matches if not m[0])
-        return result
+        return sum(int(a) * int(b) for op, a, b in regex.findall(self.data) if not op)
 
     def solve_part2(self) -> int:
-        matches = list()
-        for line in self.data:
-            matches.extend(regex.findall(line))
-
         result = 0
         enabled = True
-        for m in matches:
+        for m in regex.findall(self.data):
             match m[0]:
                 case "do":
                     enabled = True

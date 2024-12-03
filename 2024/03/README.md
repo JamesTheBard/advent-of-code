@@ -47,3 +47,25 @@ for line in self.data:
 ```
 
 I think today's problem was pretty fun generally and let me break out some regular expressions.
+
+## Afterward
+
+So, I got bored and fixed some minor annoyances: mainly the data parsing side.  Instead of loading all of the lines in via `.readlines()`, I changed it over to a simple `.read()`.  This allowed for Part 1 to get simplified from:
+
+```python
+def solve_part1(self) -> int:
+    result = 0
+    for line in self.data:
+        if matches := regex.findall(line):
+            result += sum(int(m[1]) * int(m[2]) for m in matches if not m[0])
+    return result
+```
+
+...to something a bit more simple.
+
+```python
+def solve_part1(self) -> int:
+    return sum(int(a) * int(b) for op, a, b in regex.findall(self.data) if not op)
+```
+
+Part 2 also simplified somewhat and in a very, very similar manner.  This is what happens when you get bored and stare at code for awhile.
