@@ -15,8 +15,9 @@ regex = re.compile(r"mul\((\d+), (\d+)\)")
 Combine this with a `.finditer()` and everything is good to go.
 
 ```python
-matches = regex.finditer(line_of_text)
-sum(int(m.group(1)) * int(m.group(2)) for m in matches)
+for line in self.data:
+    if matches := regex.finditer(line):
+        sum(int(m.group(1)) * int(m.group(2)) for m in matches)
 ```
 
 ## Part 2
@@ -34,5 +35,13 @@ regex = re.compile(r"(?:(do|don't)\(\)|mul\((\d+),(\d+)\))")
 We're also going to change from `.finditer()` to `.findall()` because we get a nice list of tuples.  The first element of each tuple is either `"do"`, `"don't"`, or `''`.  The empty one is the multiply instruction and means we can multiply some numbers.
 
 Next was a `match/case` statement off of that first element and everything works the first-ish time out of the gate.
+
+Finally, gotta backport this change to part 1 because the code no longer works.  Since `m[0]` is an empty string when it's a `mul()` operation, we need to filter all of the matches for only the ones where `m[0]` is empty.
+
+```python
+for line in self.data:
+    if matches := regex.findall(line):
+        sum(int(m[1]) * int(m[2]) for m in matches if not m[0])
+```
 
 I think today's problem was pretty fun generally and let me break out some regular expressions.
