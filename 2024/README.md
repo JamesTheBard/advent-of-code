@@ -14,3 +14,4 @@ The times generated are on my main rig running a stock AMD Ryzen 9 9950X with no
 |:--:|:--:|
 | Day 1 | 14.8 msec |
 | Day 2 | 19.4 msec |
+| Day 3 | 12.1 msec |
