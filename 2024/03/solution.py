@@ -21,9 +21,11 @@ class Solution:
         return result
 
     def solve_part2(self) -> int:
-        result = 0
         matches = list()
-        _ = [matches.extend(regex.findall(line)) for line in self.data]
+        for line in self.data:
+            matches.extend(regex.findall(line))
+
+        result = 0
         enabled = True
         for m in matches:
             match m[0]:
