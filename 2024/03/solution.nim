@@ -4,7 +4,7 @@ import std/strutils
 let data: string = readFile("input.txt")
 let regex: Regex = re"(?:(do|don't)\(\)|mul\((\d+),(\d+)\))"
 
-proc processData(dampen: bool): int =
+proc processData(fix: bool): int =
   var 
     match_array: array[3, string]
     bounds: (int, int) = (0, 0)
@@ -17,16 +17,16 @@ proc processData(dampen: bool): int =
       of "do":
         enabled = true
       of "don't":
-        enabled = not dampen
+        enabled = not fix
       else:
         if enabled:
           result += match_array[1].parseInt * match_array[2].parseInt
 
 proc solvePart1(): int =
-  return processData(dampen = false)
+  return processData(fix = false)
 
 proc solvePart2(): int = 
-  return processData(dampen = true)
+  return processData(fix = true)
 
 echo solvePart1()
 echo solvePart2()
