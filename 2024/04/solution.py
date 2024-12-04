@@ -18,13 +18,14 @@ class Solution:
         return [''.join(i) for i in zip(*grid)]
 
     def find_diagonal(self, x: int, y: int, word: str) -> int:
+        word_list = (word, word[::-1])
         xr = range(x, x + len(word))
         yr = range(y, y + len(word))
         count = 0
         for i in (-1, 1):
             try:
                 test_string = ''.join((self.grid[y][x] for x, y in zip(xr[::i], yr)))
-                count += word in test_string or word[::-1] in test_string
+                count += test_string in word_list
             except IndexError:
                 pass
         return count

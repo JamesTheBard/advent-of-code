@@ -46,3 +46,7 @@ So, this is where I lucked out.  My `find_diagonal` method was already perfect f
 I think this is the `profit` step.
 
 Still, fun puzzle and made me think a bit.
+
+### Afterword
+
+I made a quick readability change.  Instead of seeing if the word was in the string for diagonals, I changed it to building a tuple with both the word and its inverse in it then seeing if the string was in the tuple.
