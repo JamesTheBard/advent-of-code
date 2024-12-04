@@ -9,6 +9,7 @@ proc processData(dampen: bool): int =
     match_array: array[3, string]
     bounds: (int, int) = (0, 0)
     enabled: bool = true
+
   while true:
     bounds = data.findBounds(regex, match_array, start = bounds[1])
     if bounds[0] == -1: return
