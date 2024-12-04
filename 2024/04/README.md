@@ -51,6 +51,23 @@ Still, fun puzzle and made me think a bit.
 
 I made a quick readability change.  Instead of seeing if the word was in the string for diagonals, I changed it to building a tuple with both the word and its inverse in it then seeing if the string was in the tuple.
 
+It now looks more like this:
+
+```python
+def find_diagonal(self, x: int, y: int, word: str) -> int:
+    word_list = (word, word[::-1])
+    xr = range(x, x + len(word))
+    yr = range(y, y + len(word))
+    count = 0
+    for i in (-1, 1):
+        try:
+            test_string = ''.join((self.grid[y][x] for x, y in zip(xr[::i], yr)))
+            count += test_string in word_list
+        except IndexError:
+            pass
+    return count
+```
+
 ### Footnotes
 
 [^1]: The `transpose` method doesn't actually transpose the initial grid as it returns a completely new grid that is transposed opposed to transposing the original grid.  However, with respect to diagonal matches a transpose doesn't actually effect the number of matches as we're flipping the grid on a diagonal.
