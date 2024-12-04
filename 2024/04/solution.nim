@@ -31,18 +31,20 @@ proc findDiagonal(x: int, y: int, word: string): int =
       result += 1
 
 proc countWords(word: string): int =
+  let bounds: int = height - word.len
   for w in [word, word.reversed.join]:
     for idx in 0..<height:
       result += grid[idx].count(w)
       result += grid_t[idx].count(w)
 
-  for x in 0..height - word.len:
-    for y in 0..height - word.len:
+  for x in 0..bounds:
+    for y in 0..bounds:
       result += findDiagonal(x, y, word)
 
 proc countCrosses(word: string): int =
-  for y in 0..height - word.len:
-    for x in 0..height - word.len:
+  let bounds: int = height - word.len
+  for y in 0..bounds:
+    for x in 0..bounds:
       if findDiagonal(x, y, word) == 2:
         result += 1
 
