@@ -37,7 +37,7 @@ Also that transpose function? Very useful. So:
 - Count occurances for `XMAS` and `SAMX` on each line.
 - Count diagonal occurances for `XMAS` and `SAMX` across the grid.
 
-The transpose happening before the diagonal count doesn't change the sum because diagonal matches don't change on transpose.
+The transpose happening before the diagonal count doesn't change the sum because diagonal matches don't change on transpose.[^1]
 
 ### Part 2
 
@@ -50,3 +50,7 @@ Still, fun puzzle and made me think a bit.
 ### Afterword
 
 I made a quick readability change.  Instead of seeing if the word was in the string for diagonals, I changed it to building a tuple with both the word and its inverse in it then seeing if the string was in the tuple.
+
+### Footnotes
+
+[^1]: The `transpose` method doesn't actually transpose the initial grid as it returns a completely new grid that is transposed opposed to transposing the original grid.  However, with respect to diagonal matches a transpose doesn't actually effect the number of matches as we're flipping the grid on a diagonal.
