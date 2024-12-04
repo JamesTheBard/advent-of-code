@@ -31,11 +31,12 @@ proc findDiagonal(x: int, y: int, word: string): int =
       result += 1
 
 proc countWords(word: string): int =
-  let bounds: int = height - word.len
-  for w in [word, word.reversed.join]:
-    for idx in 0..<height:
-      result += grid[idx].count(w)
-      result += grid_t[idx].count(w)
+  let 
+    bounds: int = height - word.len
+    word_r: string = word.reversed.join
+  for idx in 0..<height:
+    result += grid[idx].count(word) + grid[idx].count(word_r)
+    result += grid_t[idx].count(word) + grid_t[idx].count(word_r)
 
   for x in 0..bounds:
     for y in 0..bounds:
