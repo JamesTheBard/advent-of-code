@@ -26,7 +26,7 @@ processInput("input.txt")
 proc pageOrderCorrect(pages: seq[int]): bool =
   for idx, page in pages:
     for p in pages[idx + 1..^1]:
-      if rules[page].count(p) == 0:
+      if not rules[page].contains(p):
         return false
   return true 
 
