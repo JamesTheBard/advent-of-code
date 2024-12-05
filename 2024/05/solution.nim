@@ -1,18 +1,21 @@
-import std/sets
 import std/strutils
 import std/sequtils
 import std/tables
 import std/algorithm
 
 var
-  rules: HashSet[string]
+  rules: Table[int, seq[int]]
   updates: seq[seq[int]]
 
 proc processInput(input_file: string) =
   for line in lines input_file:
     var update: seq[int]
     if '|' in line:
-      rules.incl(line.strip)
+      let a: seq[string] = line.strip.split("|")
+      if not rules.contains(a[0].parseInt):
+        rules[a[0].parseInt] = @[a[1].parseInt]
+      else:
+        rules[a[0].parseInt].add(a[1].parseInt)
     elif ',' in line:
       for i in line.strip.split(","):
         update.add(i.parseInt)
@@ -21,23 +24,20 @@ proc processInput(input_file: string) =
 processInput("input.txt")
 
 proc pageOrderCorrect(pages: seq[int]): bool =
-  for idx, current in pages:
-    var new_set: HashSet[string]
-    for i in pages[idx + 1..^1]:
-      new_set.incl("$1|$2" % [current.intToStr, i.intToStr])
-    if len(new_set * rules) != pages.len - idx - 1:
-      return false
-  return true
+  for idx, page in pages:
+    for p in pages[idx + 1..^1]:
+      if rules[page].count(p) == 0:
+        return false
+  return true 
 
 proc fixPageOrder(pages: seq[int]): seq[int] =
-  var result_table: CountTable[int]
+  var total_count: CountTable[int]
   for page in pages:
-    var new_set: HashSet[string]
-    for i in pages:
-      new_set.incl("$1|$2" % [page.intToStr, i.intToStr])
-    result_table[page] = len(new_set * rules)
-  result_table.sort(SortOrder.Descending)
-  return result_table.keys.toSeq
+    for p in pages:
+      if rules[page].contains(p):
+        total_count.inc(page)
+  total_count.sort(SortOrder.Descending)
+  return total_count.keys.toSeq
 
 proc solvePart1(): int =
   for update in updates:
