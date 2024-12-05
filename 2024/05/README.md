@@ -57,6 +57,38 @@ def fix_page_order(self, pages: Iterable[int]) -> list[int]:
 
 From there, it's again just getting the median value and `sum()`ing them up.
 
+Another great puzzles, still think this one was slightly easier than yesterdays, but still a good Day 5 problem.
+
 ### Afterword
 
-Another great puzzles, still think this one was slightly easier than yesterdays, but still a good Day 5 problem.
+So, sets are _slow_.  I think anyone who's written a bit of Python can attest to this.  The initial solve took about 60 milliseconds to complete and I won't lie: it _annoyed_ me.
+
+A friend showed a similar solve and it took about 8 milliseconds so at this point on a slow day it was time to remove all of the sets from the code.  No more intersections...well, by name anyway.
+
+So, first things first: replacing the `set[str]` with a nice `defaultdict[str, list[int]]` for the rules.  We'll just combine all of the rules for the pages into the dictionary and that should work as I can now reference pages based on a page.
+
+Now it's time to start refactoring.  The `process_input` changed to populate the `defaultdict` (simple).
+
+The `page_order_correct()` method definitely changed.  Since we're trying to remove all of the `set()`s out of the code, let's just replace the whole set intersection stuff with:
+
+```python
+def page_order_correct(self, pages: Iterable[int]) -> bool:
+    for idx, page in enumerate(pages):
+        if any(i not in self.rules[page] for i in pages[idx + 1:]):
+            return False
+    return True
+```
+
+We're still checking to see if all of the required rules are there for the future pages, but this should be much faster.
+
+For the `fix_page_order()` method, things get a bit slimmer as well:
+
+```python
+def fix_page_order(self, pages: Iterable[int]) -> list[int]:
+    result = {page: sum(i for i in pages if i in self.rules[page]) for page in pages}
+    return [k for k, _ in sorted(result.items(), key=lambda i: i[1], reverse=True)]
+```
+
+Instead of getting the length of those set intersections, we're just counting the number of pages in the rules, making the dict via a comprehension, then returning the sorted keys.
+
+Runtimes went from about 58 milliseconds down to 19 milliseconds which is a very nice speedup.

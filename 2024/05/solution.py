@@ -1,7 +1,8 @@
 from pathlib import Path
 from typing import Iterable
+from collections import defaultdict
 
-Rules = set[str]
+Rules = defaultdict[str, list[int]]
 Updates = list[tuple[int, ...]]
 
 
@@ -15,28 +16,24 @@ class Solution:
         self.rules, self.updates = self.process_input(Path(input_file))
 
     def process_input(self, input_file: Path) -> tuple[Rules, Updates]:
-        rules: set[str] = list()
+        rules: defaultdict[str, list[int]] = defaultdict(list)
         updates: list[tuple[int]] = list()
         for line in input_file.open('r'):
             if '|' in line:
-                rules.append(line.strip())
+                k, v = (int(i) for i in line.split('|'))
+                rules[k].append(v)
             elif ',' in line:
                 updates.append(tuple(int(i) for i in line.strip().split(',')))
         return rules, updates
 
     def page_order_correct(self, pages: Iterable[int]) -> bool:
-        for idx, current in enumerate(pages):
-            others = pages[idx + 1:]
-            rules = set(f"{current}|{i}" for i in others).intersection(self.rules)
-            if len(rules) != len(others):
+        for idx, page in enumerate(pages):
+            if any(i not in self.rules[page] for i in pages[idx + 1:]):
                 return False
         return True
 
     def fix_page_order(self, pages: Iterable[int]) -> list[int]:
-        result = dict()
-        for page in pages:
-            rules = set(f"{page}|{i}" for i in pages if i != page).intersection(self.rules)
-            result[page] = len(rules)
+        result = {page: sum(i for i in pages if i in self.rules[page]) for page in pages}
         return [k for k, _ in sorted(result.items(), key=lambda i: i[1], reverse=True)]
 
     def solve_part1(self) -> int:
