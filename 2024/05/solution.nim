@@ -36,6 +36,7 @@ proc fixPageOrder(pages: seq[int]): seq[int] =
     for p in pages:
       if rules[page].contains(p):
         total_count.inc(page)
+        break
   total_count.sort(SortOrder.Descending)
   return total_count.keys.toSeq
 
