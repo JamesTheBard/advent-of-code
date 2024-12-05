@@ -61,7 +61,7 @@ Another great puzzles, still think this one was slightly easier than yesterdays,
 
 ### Afterword
 
-So, sets are _slow_.  I think anyone who's written a bit of Python can attest to this.  The initial solve took about 60 milliseconds to complete and I won't lie: it _annoyed_ me.
+So, sets are _slow_.[^1]  I think anyone who's written a bit of Python can attest to this.  The initial solve took about 60 milliseconds to complete and I won't lie: it _annoyed_ me.
 
 A friend showed a similar solve and it took about 8 milliseconds so at this point on a slow day it was time to remove all of the sets from the code.  No more intersections...well, by name anyway.
 
@@ -92,3 +92,5 @@ def fix_page_order(self, pages: Iterable[int]) -> list[int]:
 Instead of getting the length of those set intersections, we're just counting the number of pages in the rules, making the dict via a comprehension, then returning the sorted keys.
 
 Runtimes went from about 58 milliseconds down to 19 milliseconds which is a very nice speedup.
+
+[^1]: The main slowness is from creating sets then running intersections on them with other sets.  The replacement code definitely runs faster, and removing the string formatting constructions didn't hurt either.
