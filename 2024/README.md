@@ -2,11 +2,22 @@
 
 ## Runtimes
 
-Figured I'd keep track of how long each solve takes.  The total runtime is determined using the following shell command:
+Figured I'd keep track of how long each solve takes.  The total runtime is determined using the following shell command(s):
+
+### Python
 
 ```
 $ perf stat -r 100 -B python solution.py
 ```
+
+### NIM
+
+```
+$ nim c -d:release solution.nim
+$ perf stat -r 100 -B ./solution
+```
+
+### Results
 
 The times generated are on my main rig running a stock AMD Ryzen 9 9950X with no overclock and memory running at 5600 MT/s.
 
