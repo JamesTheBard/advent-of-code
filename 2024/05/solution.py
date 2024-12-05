@@ -34,7 +34,7 @@ class Solution:
 
     def fix_page_order(self, pages: Iterable[int]) -> bool:
         result = dict()
-        for idx, page in enumerate(pages):
+        for page in pages:
             rules = set(f"{page}|{i}" for i in pages if i != page).intersection(self.rules)
             result[page] = len(rules)
         return [k for k, v in sorted(result.items(), key=lambda i: i[1], reverse=True)]
