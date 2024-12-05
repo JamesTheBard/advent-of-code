@@ -35,7 +35,7 @@ The example `75,97,47,61,53` would kinda go like this:
 The dictionary contains:
 
 ```python
-{ 75: 3, 97: 4, 47: 2, 61: 1, 53: 0}
+{75: 3, 97: 4, 47: 2, 61: 1, 53: 0}
 ```
 
 After all of this, just get the keys sorted on descending values and you get: 
