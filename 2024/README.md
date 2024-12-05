@@ -16,7 +16,7 @@ The times generated are on my main rig running a stock AMD Ryzen 9 9950X with no
 | Day 2[^1] | 19.4 msec | --- |
 | Day 3 | 12.1 msec | 0.5 msec |
 | Day 4 | 56.6 msec | 5.0 msec[^2] |
-| Day 5 | 57.3 msec | |
+| Day 5 | 57.3 msec | 6.9 msec |
 
 [^1]: Skipped Day 2 because I already saw a pretty good solution from a friend and it didn't feel like I'd be coming up with the solution on my own in that case.
 
