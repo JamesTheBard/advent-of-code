@@ -33,4 +33,4 @@ The times generated are on my main rig running a stock AMD Ryzen 9 9950X with no
 
 [^2]: There are definitely some optimizations that could be done to get that number more inline with the others.  However, these are initial solve times, not optimized times.
 
-[^3]: After removing sets from both the Python and NIM solves, the times were reduced to 19.2 msec and 1.4 msec respectively.
+[^3]: After removing sets from both the Python and NIM solves, the times were reduced to 19.2 msec and 1.0 msec respectively.
