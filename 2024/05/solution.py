@@ -1,6 +1,6 @@
+from collections import defaultdict
 from pathlib import Path
 from typing import Iterable
-from collections import defaultdict
 
 Rules = defaultdict[str, list[int]]
 Updates = list[tuple[int, ...]]
