@@ -32,12 +32,12 @@ class Solution:
                 return False
         return True
 
-    def fix_page_order(self, pages: Iterable[int]) -> bool:
+    def fix_page_order(self, pages: Iterable[int]) -> list[int]:
         result = dict()
         for page in pages:
             rules = set(f"{page}|{i}" for i in pages if i != page).intersection(self.rules)
             result[page] = len(rules)
-        return [k for k, v in sorted(result.items(), key=lambda i: i[1], reverse=True)]
+        return [k for k, _ in sorted(result.items(), key=lambda i: i[1], reverse=True)]
 
     def solve_part1(self) -> int:
         return sum(i[len(i) // 2] for i in self.updates if self.page_order_correct(i))
